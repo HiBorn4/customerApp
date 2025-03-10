@@ -13,74 +13,90 @@ class UnitItem extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      padding: EdgeInsets.all(screenWidth * 0.03),
+      padding: EdgeInsets.all(screenWidth * 0.04),
       margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-      height: screenHeight*0.2,
+      height: screenHeight * 0.2,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 6.0,
+            spreadRadius: 2.0,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Column 1
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                
                 Column(
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                 Text(
-                  'Shuba Eco Stone',
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.04,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    Text(
+                      'Shuba Eco Stone',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.005),
+                    Row(
+                      children: [
+                        Text(
+                          'UNIT NO: ',
+                          style: TextStyle(fontSize: screenWidth * 0.035),
+                        ),
+                        Text(
+                          unit.unitNo,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.035,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.005),
+                  ],
                 ),
-                SizedBox(height: screenHeight * 0.005),
-
-                Text(
-                  'UNIT NO: ${unit.unitNo}',
-                  style: TextStyle(fontSize: screenWidth * 0.035),
-                ),
-                SizedBox(height: screenHeight * 0.005),],),
-
                 Column(
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Container(
-  width: screenWidth * 0.1,
-  height: screenWidth * 0.1,
-  decoration: BoxDecoration(
-    shape: BoxShape.circle, // Changed to circular shape
-    border: Border.all(color: Colors.black),
-    image: DecorationImage(
-      image: AssetImage('assets/profile.jpeg'), // Placeholder image
-      fit: BoxFit.cover,
-    ),
-  ),
-),
-
-                SizedBox(height: screenHeight * 0.005),
-
-                Text(
-                  unit.user,
-                  style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.w500),
-                ),],)
+                    Container(
+                      width: screenWidth * 0.1,
+                      height: screenWidth * 0.1,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black),
+                        image: DecorationImage(
+                          image: AssetImage('assets/profile.jpeg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.005),
+                    Text(
+                      unit.user,
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-          SizedBox(width: screenWidth*0.2,),
-
-          // Column 2
+          SizedBox(width: screenWidth * 0.2),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // Registered Label
                 Container(
                   padding: EdgeInsets.symmetric(
                     vertical: screenHeight * 0.005,
@@ -88,7 +104,6 @@ class UnitItem extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: Colors.green.withOpacity(0.2),
-                    border: Border.all(color: Colors.green),
                   ),
                   child: Text(
                     'REGISTERED',
@@ -99,24 +114,20 @@ class UnitItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.01),
-
+                SizedBox(height: screenHeight * 0.02),
                 Text(
                   'Total Due',
-                  style: TextStyle(fontSize: screenWidth * 0.035),
+                  style: TextStyle(fontSize: screenWidth * 0.03),
                 ),
                 SizedBox(height: screenHeight * 0.005),
-
                 Text(
                   '₹${unit.due}',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                     fontSize: screenWidth * 0.045,
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.005),
-
-                // "Know More" Button with Circular Arrow
                 InkWell(
                   onTap: () => Get.toNamed('/project-detail'),
                   child: Row(
@@ -125,7 +136,7 @@ class UnitItem extends StatelessWidget {
                       Text(
                         'Know More',
                         style: TextStyle(
-                          fontSize: screenWidth * 0.035,
+                          fontSize: screenWidth * 0.03,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -134,12 +145,13 @@ class UnitItem extends StatelessWidget {
                         width: screenWidth * 0.08,
                         height: screenWidth * 0.08,
                         decoration: BoxDecoration(
+                          color: Colors.black,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.black),
                         ),
                         child: Icon(
                           Icons.arrow_forward,
                           size: screenWidth * 0.04,
+                          color: Colors.white,
                         ),
                       ),
                     ],

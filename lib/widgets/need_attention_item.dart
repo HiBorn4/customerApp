@@ -17,9 +17,10 @@ class NeedsAttentionItem extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      height: screenHeight * 0.18,
+      height: screenHeight * 0.17,
       width: screenWidth,
       child: Card(
+        color: Colors.white, // Set background color to white
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Sharp edges
         margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
         child: Padding(
@@ -31,22 +32,30 @@ class NeedsAttentionItem extends StatelessWidget {
               Row(
                 children: [
                   Container(
-  width: screenWidth * 0.08,
-  height: screenWidth * 0.08,
-  alignment: Alignment.center,
-  decoration: BoxDecoration(
-    color: Colors.grey[300],
-    shape: BoxShape.circle, // Makes it circular
-    border: Border.all(color: Colors.black),
-  ),
-  child: Text('${index + 1}'.padLeft(2, '0'),
-      style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold)),
-),
-
+                    width: screenWidth * 0.08,
+                    height: screenWidth * 0.08,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.black, // Background black
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: Text(
+                      '${index + 1}'.padLeft(2, '0'),
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // Text white
+                      ),
+                    ),
+                  ),
                   SizedBox(width: screenWidth * 0.03),
                   Text(
                     'UNIT NO: ${unit.unitNo}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.045),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.03,
+                    ),
                   ),
                 ],
               ),
@@ -68,7 +77,7 @@ class NeedsAttentionItem extends StatelessWidget {
                       Text(
                         '₹${unit.amount}',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           fontSize: screenWidth * 0.045,
                         ),
                       ),
@@ -77,23 +86,28 @@ class NeedsAttentionItem extends StatelessWidget {
                         'Due in ${unit.daysLeft} days',
                         style: TextStyle(
                           color: Colors.red,
-                          fontSize: screenWidth * 0.035,
+                          fontSize: screenWidth * 0.025,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                   Container(
-                    height: screenHeight * 0.05,
+                    height: screenHeight * 0.04,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFE6E6FA), // Lavender background
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Sharp corners
                         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                       ),
                       onPressed: () => Get.toNamed('/payment'),
                       child: Text(
                         'Pay Now',
-                        style: TextStyle(fontSize: screenWidth * 0.035),
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.035,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.black, // Text black
+                        ),
                       ),
                     ),
                   ),

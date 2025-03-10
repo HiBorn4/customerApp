@@ -42,13 +42,25 @@ class HomeController extends GetxController {
     ProjectModel(
       name: 'SHUBA ELAN',
       location: 'CHIKBALAPUR',
-      price: '2.25 cr Onwards',
+      price: '2.25 cr',
       image: 'assets/project1.jpeg',
     ),
     ProjectModel(
       name: 'SHUBA ECO STONE',
       location: 'BANGALORE',
-      price: '1.75 cr Onwards',
+      price: '1.75 cr',
+      image: 'assets/project1.jpeg',
+    ),
+    ProjectModel(
+      name: 'SHUBA ELAN',
+      location: 'CHIKBALAPUR',
+      price: '2.25 cr',
+      image: 'assets/project1.jpeg',
+    ),
+    ProjectModel(
+      name: 'SHUBA ECO STONE',
+      location: 'BANGALORE',
+      price: '1.75 cr',
       image: 'assets/project1.jpeg',
     ),
   ];

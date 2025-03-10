@@ -14,10 +14,11 @@ class SummaryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      padding: EdgeInsets.all(screenWidth*0.02),
+    
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.all(screenWidth*0.03),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.white,
         // borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -28,7 +29,7 @@ class SummaryItem extends StatelessWidget {
             value,
             style: TextStyle(
               fontSize: screenWidth * 0.04,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w900,
             ),
           ),
           SizedBox(height: 8),
@@ -36,7 +37,7 @@ class SummaryItem extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: screenWidth * 0.03,
-              color: Colors.grey[600],
+              color: Colors.grey[800],
             ),
           ),
           Icon(Icons.arrow_forward, size: screenWidth * 0.05),
