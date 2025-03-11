@@ -18,7 +18,7 @@ class DonutChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double remainingBalance = total - paid;
+    int remainingBalance = (total - paid).round(); // Convert to int (remove decimals)
 
     return SizedBox(
       width: size * 1.2, // Increase the total size of the donut
@@ -27,7 +27,7 @@ class DonutChart extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CustomPaint(
-            size: Size(size, size), // Increased outer radius
+            size: Size(size, size),
             painter: _DonutChartPainter(
               paid: paid,
               total: total,
@@ -36,24 +36,24 @@ class DonutChart extends StatelessWidget {
             ),
           ),
 
-          // Centered Balance Text (with better spacing)
+          // Centered Balance Text
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 "Balance",
                 style: TextStyle(
-                  fontSize: size * 0.12, // Slightly increased text size
+                  fontSize: size * 0.1,
                   fontWeight: FontWeight.bold,
                   color: Colors.black54,
                 ),
               ),
-              SizedBox(height: size * 0.02), // Adds spacing between texts
+              SizedBox(height: size * 0.02),
               Text(
-                "₹${remainingBalance.toStringAsFixed(2)}",
+                "₹$remainingBalance", // Display as integer
                 style: TextStyle(
                   fontSize: size * 0.12, // Increased balance font size
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
                   color: Colors.black,
                 ),
               ),
@@ -80,31 +80,43 @@ class _DonutChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double strokeWidth = size.width * 0.18; // Keeps thickness moderate
+    final double strokeWidth = size.width * 0.25; // Increased thickness
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    final double radius = (size.width - strokeWidth) * 1.15;
+    final double paidPercentage = paid / total;
+
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.butt; // Keeps edges sharp
 
-    final Offset center = Offset(size.width / 2, size.height / 2);
-    final double radius = (size.width/1.1) - (strokeWidth/1.1); // Increased radius
+    // Draw remaining balance (Grey)
+paint.color = Colors.grey[300]!;
+canvas.drawCircle(center, radius, paint);
 
-    // Draw eligible cost background
-    paint.color = eligibleColor;
-    canvas.drawCircle(center, radius, paint);
+// Draw eligible balance (Lavender)
+paint.color = Colors.purple[200]!;
+canvas.drawArc(
+  Rect.fromCircle(center: center, radius: radius),
+  -math.pi / 2,
+  (1 - paidPercentage) * 2 * math.pi,
+  false,
+  paint,
+);
 
-    // Draw paid arc
-    if (paid > 0) {
-      final double paidAngle = (paid / total) * 2 * math.pi; // Convert to radians
-      paint.color = paidColor;
-      canvas.drawArc(
-        Rect.fromCircle(center: center, radius: radius),
-        -math.pi / 2, // Start from the top
-        paidAngle,
-        false,
-        paint,
-      );
-    }
+// Draw paid arc (Main color)
+if (paid > 0) {
+  final double paidAngle = paidPercentage * 2 * math.pi;
+  paint.color = paidColor;
+  canvas.drawArc(
+    Rect.fromCircle(center: center, radius: radius),
+    -math.pi / 2, // Start from the top
+    paidAngle,
+    false,
+    paint,
+  );
+}
+
   }
 
   @override

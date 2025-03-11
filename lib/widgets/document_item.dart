@@ -13,10 +13,11 @@ class DocumentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Sharp Corners
-      // margin: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
+      margin: EdgeInsets.zero, // **Removed margin**
       child: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.03),
+        padding: EdgeInsets.all(screenWidth * 0.025),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -26,7 +27,7 @@ class DocumentItem extends StatelessWidget {
               size: screenWidth * 0.06,
               color: Colors.blueAccent,
             ),
-            SizedBox(width: screenWidth * 0.04),
+            SizedBox(width: screenWidth * 0.06),
 
             // Column 2: Name, Date, File Size
             Expanded(
@@ -36,7 +37,7 @@ class DocumentItem extends StatelessWidget {
                   Text(
                     document.name,
                     style: TextStyle(
-                      fontSize: screenWidth * 0.045,
+                      fontSize: screenWidth * 0.04,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -44,7 +45,7 @@ class DocumentItem extends StatelessWidget {
                   Text(
                     document.date,
                     style: TextStyle(
-                      fontSize: screenWidth * 0.035,
+                      fontSize: screenWidth * 0.03,
                       color: Colors.grey[600],
                     ),
                   ),
@@ -52,7 +53,7 @@ class DocumentItem extends StatelessWidget {
                   Text(
                     document.fileSize,
                     style: TextStyle(
-                      fontSize: screenWidth * 0.035,
+                      fontSize: screenWidth * 0.03,
                       color: Colors.grey[500],
                     ),
                   ),

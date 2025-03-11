@@ -19,9 +19,10 @@ class ProjectDetailScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: _buildAppBar(screenWidth),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(Responsive.getPadding(screenWidth).horizontal*0.3),
+        padding: EdgeInsets.all(Responsive.getPadding(screenWidth).horizontal*0.4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,16 +30,18 @@ class ProjectDetailScreen extends StatelessWidget {
             SizedBox(height: screenHeight * 0.03),
 
               _buildNeedsAttentionSection(screenWidth, screenHeight),
+            
+            _buildCategory(screenWidth, screenHeight),
             SizedBox(height: screenHeight * 0.03),
 
-            _buildUnitDimensions(screenWidth),
+            _buildUnitDimensions(screenWidth, screenHeight),
             SizedBox(height: screenHeight * 0.03),
             _buildModificationSection(screenWidth),
             SizedBox(height: screenHeight * 0.03),
             _buildHelpRepairSection(screenWidth),
             SizedBox(height: screenHeight * 0.03),
             _buildDocumentsSection(screenWidth),
-            SizedBox(height: screenHeight * 0.03),
+            // SizedBox(height: screenHeight * 0.03),
             _buildTransactionsSection(screenWidth),
           ],
         ),
@@ -53,7 +56,7 @@ class ProjectDetailScreen extends StatelessWidget {
         children: [
           Text('Shuba Ecostone',
               style: TextStyle(
-                fontSize: Responsive.getFontSize(screenWidth, 20),
+                fontSize: Responsive.getFontSize(screenWidth, 20,), fontWeight: FontWeight.bold,
               )),
           Text('Shuba Ecostone - 131',
               style: TextStyle(
@@ -64,9 +67,9 @@ class ProjectDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUnitSummary(double screenWidth) {
+Widget _buildUnitSummary(double screenWidth) {
   RxInt selectedTab = 0.obs; // 0 = Stage Balance, 1 = Unit Cost
-  final ProjectController _controller = Get.find<ProjectController>(); 
+  final ProjectController _controller = Get.find<ProjectController>();
 
   return Obx(() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,35 +78,74 @@ class ProjectDetailScreen extends StatelessWidget {
           Text(
             'UNIT SUMMARY',
             style: TextStyle(
-              fontSize: Responsive.getFontSize(screenWidth, 18),
+              fontSize: Responsive.getFontSize(screenWidth, 14),
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: screenWidth * 0.03),
 
-          // Tab Switcher
-          Row(
-            children: [
-              _buildTab('Stage Balance', 0, selectedTab, screenWidth),
-              _buildTab('Unit Cost', 1, selectedTab, screenWidth),
-            ],
+          // Center-Aligned Tab Switcher
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildTab('Stage Balance', 0, selectedTab, screenWidth),
+                _buildTab('Unit Cost', 1, selectedTab, screenWidth),
+              ],
+            ),
           ),
           SizedBox(height: screenWidth * 0.04),
 
-          // Card with switchable content
+          // Content Card
           Container(
-            padding: EdgeInsets.all(screenWidth * 0.04),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: selectedTab.value == 0
-                ? _buildStageBalance(screenWidth, _controller)
-                : _buildUnitCost(screenWidth, _controller),
-          ),
+  padding: EdgeInsets.all(screenWidth * 0.04),
+  decoration: BoxDecoration(
+    color: Colors.white, // Changed from Colors.grey[200] to Colors.white
+    borderRadius: BorderRadius.zero, // Sharp corners
+  ),
+  child: selectedTab.value == 0
+      ? _buildStageBalance(screenWidth, _controller)
+      : _buildUnitCost(screenWidth, _controller),
+),
         ],
       ));
 }
+
+// Center-Aligned Tab Widget
+Widget _buildTab(String text, int index, RxInt selectedTab, double screenWidth) {
+  bool isSelected = selectedTab.value == index;
+
+  return GestureDetector(
+    onTap: () {
+      selectedTab.value = index;
+    },
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.015),
+      child: Column(
+        children: [
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: isSelected
+                  ? Responsive.getFontSize(screenWidth, 16) // Larger for selected
+                  : Responsive.getFontSize(screenWidth, 14), // Smaller for unselected
+              fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal, // No bold for unselected
+              color: isSelected ? Colors.black : Colors.grey[600], // Black for selected, grey for unselected
+            ),
+          ),
+          SizedBox(height: 3),
+          Container(
+            height: 2,
+            width: screenWidth * 0.2,
+            color: isSelected ? Colors.black : Colors.transparent, // Dark line for selected tab
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
 
 // Widget for Stage Balance
 Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
@@ -136,12 +178,13 @@ Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
           // Amount Details
           Expanded(
             flex: 3,
-            child: Column(
+            child: 
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildAmountRow('Eligible Cost', '₹${_controller.totalAmount.value}', Colors.grey[700]!),
+                _buildAmountRow('Eligible Cost', '₹${_controller.totalAmount.value.round()}', Colors.grey[700]!),
                 SizedBox(height: screenWidth * 0.02), // Space between rows
-                _buildAmountRow('Paid Cost', '₹${_controller.paidAmount.value}', Colors.purple[300]!),
+                _buildAmountRow('Paid', '₹${_controller.paidAmount.value.round()}', Colors.purple[300]!),
               ],
             ),
           ),
@@ -153,9 +196,9 @@ Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildLegendItem(Colors.grey[400]!, 'Eligible Cost'),
+          _buildLegendItem(Colors.purple[300]!, 'Paid'),
           SizedBox(width: screenWidth * 0.06),
-          _buildLegendItem(Colors.purple[300]!, 'Paid Cost'),
+          _buildLegendItem(Colors.grey[400]!, 'Balance'),
         ],
       ),
     ],
@@ -172,7 +215,8 @@ Widget _buildLegendItem(Color color, String label) {
         height: 12,
         decoration: BoxDecoration(
           color: color,
-          shape: BoxShape.circle,
+          shape: BoxShape.rectangle, // Changed from circle to square
+          borderRadius: BorderRadius.circular(2), // Slightly rounded corners for aesthetics
         ),
       ),
       SizedBox(width: 8),
@@ -184,6 +228,7 @@ Widget _buildLegendItem(Color color, String label) {
   );
 }
 
+
 // Placeholder for Unit Cost section
 Widget _buildUnitCost(double screenWidth, ProjectController _controller) {
   return Center(
@@ -194,33 +239,6 @@ Widget _buildUnitCost(double screenWidth, ProjectController _controller) {
   );
 }
 
-// Tab Widget
-Widget _buildTab(String title, int index, RxInt selectedTab, double screenWidth) {
-  return Expanded(
-    child: GestureDetector(
-      onTap: () => selectedTab.value = index,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03),
-        decoration: BoxDecoration(
-          color: selectedTab.value == index ? Colors.blue : Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(index == 0 ? 10 : 0),
-            topRight: Radius.circular(index == 1 ? 10 : 0),
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: Responsive.getFontSize(screenWidth, 14),
-            fontWeight: FontWeight.bold,
-            color: selectedTab.value == index ? Colors.white : Colors.black,
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
 // Amount Row (Stacked Layout: Label above, Value below)
 Widget _buildAmountRow(String label, String value, Color color) {
@@ -228,34 +246,23 @@ Widget _buildAmountRow(String label, String value, Color color) {
     padding: EdgeInsets.symmetric(vertical: 8),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            // Container(
-            //   width: 12,
-            //   height: 12,
-            //   decoration: BoxDecoration(
-            //     color: color,
-            //     shape: BoxShape.circle,
-            //   ),
-            // ),
-            // SizedBox(width: 10),
             Text(
               label,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w500, // Slightly bold for emphasis
               ),
             ),
-          ],
-        ),
+          
         SizedBox(height: 4), // Small spacing between label and value
         Text(
           value,
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
           ),
         ),
       ],
@@ -273,7 +280,7 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
             Text(
               'NEEDS ATTENTION',
               style: TextStyle(
-                fontSize: Responsive.getFontSize(screenWidth, 22),
+                fontSize: Responsive.getFontSize(screenWidth, 14),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -287,35 +294,137 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
           itemBuilder: (context, index) => NeedsAttentionItem(
             unit: _controller.attentionItems[index],
             index: index,
-            // _controller.screenWidth: screenWidth,
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () => Get.toNamed('/needs-attention'),
+            child: Text(
+              'View all',
+              style: TextStyle(
+                fontSize: Responsive.getFontSize(screenWidth, 16),
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildUnitDimensions(double screenWidth) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
+  Widget _buildCategory(double screenWidth, double screenHeight) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'CATEGORY',
+        style: TextStyle(
+          fontSize: Responsive.getFontSize(screenWidth, 14),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      SizedBox(height: screenHeight * 0.02),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround, // Ensures equal spacing
+        children: [
+          _buildCategoryItem(
+              screenWidth, screenHeight, Icons.receipt_long, "Cost Sheet", () {
+            Get.toNamed('/costSheet');
+          }),
+          _buildCategoryItem(
+              screenWidth, screenHeight, Icons.schedule, "Schedule", () {
+            Get.toNamed('/schedule');
+          }),
+          _buildCategoryItem(
+              screenWidth, screenHeight, Icons.list, "Activity", () {
+            Get.toNamed('/activity');
+          }),
+          _buildCategoryItem(
+              screenWidth, screenHeight, Icons.build, "Modifications", () {
+            Get.toNamed('/modifications');
+          }),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget _buildCategoryItem(double screenWidth, double screenHeight,
+    IconData icon, String label, VoidCallback onTap) {
+  double iconSize = screenWidth * 0.08; // Responsive icon size
+  double textSize = Responsive.getFontSize(screenWidth, 14);
+  double containerSize = screenWidth * 0.15; // Responsive circle size
+
+  return Expanded( // Ensures equal spacing for all items
+    child: Column(
       children: [
-        Text('UNIT DETAILS AND DIMENSIONS',
-            style: TextStyle(
-              fontSize: Responsive.getFontSize(screenWidth, 18),
-              fontWeight: FontWeight.bold,
-            )),
-        SizedBox(height: screenWidth * 0.03),
-        Container(
-          height: screenWidth * 0.8,
-          padding: EdgeInsets.all(screenWidth * 0.04),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(15),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: containerSize,
+            height: containerSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  // ignore: deprecated_member_use
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Icon(
+                icon,
+                size: iconSize,
+                color: Colors.black,
+              ),
+            ),
           ),
-          child: DimensionDiagram(screenWidth: screenWidth),
+        ),
+        SizedBox(height: screenHeight * 0.01),
+        Text(
+          label,
+          style: TextStyle(fontSize: textSize, fontWeight: FontWeight.w500),
+          textAlign: TextAlign.center,
         ),
       ],
-    );
-  }
+    ),
+  );
+}
+
+
+
+
+  Widget _buildUnitDimensions(double screenWidth, double screenHeight) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'UNIT DETAILS AND DIMENSIONS',
+        style: TextStyle(
+          fontSize: Responsive.getFontSize(screenWidth, 14),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      SizedBox(height: screenWidth * 0.03),
+      Center(
+        child: Container(
+          height: screenHeight * 0.35, // Adjusted for better fit
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          child: DimensionGraph(screenWidth: screenWidth, screenHeight: screenHeight),
+        ),
+      ),
+    ],
+  );
+}
+
 
   Widget _buildModificationSection(double screenWidth) {
   return Column(
@@ -325,7 +434,7 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
       Text(
         'Modification',
         style: TextStyle(
-          fontSize: Responsive.getFontSize(screenWidth, 18),
+          fontSize: Responsive.getFontSize(screenWidth, 14),
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -335,16 +444,15 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
       Container(
         padding: EdgeInsets.all(screenWidth * 0.04),
         decoration: BoxDecoration(
-          color: Colors.blue[50],
-          border: Border.all(color: Colors.black), // Optional border
+          color: Colors.white, // Background is white
         ),
         child: Row(
           children: [
-            // Modification Icon
+            // Modification Icon (Black)
             Icon(
-              Icons.build, // Change to any relevant modification icon
+              Icons.build,
               size: screenWidth * 0.08,
-              color: Colors.blueAccent,
+              color: Colors.black, // Black icon
             ),
             SizedBox(width: screenWidth * 0.04),
 
@@ -372,11 +480,21 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
               ),
             ),
 
-            // Right Arrow
-            Icon(
-              Icons.arrow_forward_ios,
-              size: screenWidth * 0.06,
-              color: Colors.black,
+            // Right Arrow (White arrow inside black circle)
+            Container(
+              width: screenWidth * 0.08,
+              height: screenWidth * 0.08,
+              decoration: BoxDecoration(
+                color: Colors.black, // Black circle
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: screenWidth * 0.05,
+                  color: Colors.white, // White arrow
+                ),
+              ),
             ),
           ],
         ),
@@ -384,6 +502,7 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
     ],
   );
 }
+
 
 
   Widget _buildHelpRepairSection(double screenWidth) {
@@ -394,7 +513,7 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
       Text(
         'Help & Repair',
         style: TextStyle(
-          fontSize: Responsive.getFontSize(screenWidth, 18),
+          fontSize: Responsive.getFontSize(screenWidth, 14),
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -404,14 +523,13 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
       Container(
         padding: EdgeInsets.all(screenWidth * 0.04),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
-          border: Border.all(color: Colors.black), // Optional border
+          color: Colors.white, // White background
         ),
         child: Row(
           children: [
-            // Profile Image
+            // Profile Image (Reduced Radius)
             CircleAvatar(
-              radius: screenWidth * 0.08,
+              radius: screenWidth * 0.06, // Reduced size
               backgroundImage: AssetImage('assets/profile.jpeg'),
             ),
             SizedBox(width: screenWidth * 0.04),
@@ -428,15 +546,17 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  SizedBox(height: 4), // Added space between lines
                   Text(
-                    'CRM Management',
+                    'CRM Executive',
                     style: TextStyle(
                       fontSize: Responsive.getFontSize(screenWidth, 14),
                       color: Colors.grey[700],
                     ),
                   ),
+                  SizedBox(height: 4), // Added space between lines
                   Text(
-                    '191 19145 56789',
+                    '+91 9768562601',
                     style: TextStyle(
                       fontSize: Responsive.getFontSize(screenWidth, 14),
                     ),
@@ -445,16 +565,24 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
               ),
             ),
 
-            // Contact Button
+            // Contact Button with White Background & Black Border
             Container(
+              height: screenWidth*0.1,
+              width: screenWidth*0.3,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: Colors.white, // White background
+                border: Border.all(color: Colors.black), // Black border
+                borderRadius: BorderRadius.circular(5), // Slightly rounded edges
               ),
               child: TextButton(
                 onPressed: () => Get.toNamed('/contact'),
                 child: Text(
                   'Contact',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.black, // Black text
+                    fontSize: Responsive.getFontSize(screenWidth, 16),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -466,26 +594,23 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
 }
 
 
+
   Widget _buildDocumentsSection(double screenWidth) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'DOCUMENTS',
-            style: TextStyle(
-              fontSize: Responsive.getFontSize(screenWidth, 18),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextButton(
-            onPressed: () => Get.toNamed('/documents'),
-            child: Text('View all'),
-          ),
-        ],
+      // Title: DOCUMENTS
+      Text(
+        'DOCUMENTS',
+        style: TextStyle(
+          fontSize: Responsive.getFontSize(screenWidth, 14), // Increased font size slightly
+          fontWeight: FontWeight.bold,
+        ),
       ),
+
+      SizedBox(height: screenWidth * 0.04), // Added space after heading
+
+      // Documents List
       Obx(() => ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -495,12 +620,29 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
               screenWidth: screenWidth,
             ),
           )),
+
+      SizedBox(height: screenWidth * 0.03), // Responsive spacing
+
+      // "View All" Button
+      Align(
+        alignment: Alignment.centerRight,
+        child: TextButton(
+          onPressed: () => Get.toNamed('/documents'),
+          child: Text(
+            'View all',
+            style: TextStyle(
+              fontSize: Responsive.getFontSize(screenWidth, 16),
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ),
     ],
   );
 }
 
-
-  Widget _buildTransactionsSection(double screenWidth) {
+Widget _buildTransactionsSection(double screenWidth) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -508,12 +650,12 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
       Text(
         'RECENT TRANSACTIONS',
         style: TextStyle(
-          fontSize: Responsive.getFontSize(screenWidth, 18),
+          fontSize: Responsive.getFontSize(screenWidth, 14), // Increased for better visibility
           fontWeight: FontWeight.bold,
         ),
       ),
 
-      SizedBox(height: 8),
+      SizedBox(height: screenWidth * 0.04), // Added space after heading
 
       // Transactions List
       Obx(() => ListView.builder(
@@ -526,23 +668,27 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
             ),
           )),
 
-      SizedBox(height: 8),
+      SizedBox(height: screenWidth * 0.03), // Responsive spacing
 
-      // "View all" Button with Lines Below
+      // "View All" Button
       Align(
-        alignment: Alignment.bottomRight,
-        child: Column(
-          children: [
-            TextButton(
-              onPressed: () => Get.toNamed('/transactions'),
-              child: Text('View all'),
+        alignment: Alignment.centerRight,
+        child: TextButton(
+          onPressed: () => Get.toNamed('/transactions'),
+          child: Text(
+            'View all',
+            style: TextStyle(
+              fontSize: Responsive.getFontSize(screenWidth, 16),
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
             ),
-          ],
+          ),
         ),
       ),
     ],
   );
 }
+
 
 
   
