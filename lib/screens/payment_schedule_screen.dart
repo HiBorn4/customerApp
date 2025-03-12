@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/payment_schedule_controller.dart';
 import '../models/payment_entry_model.dart';
 import '../models/quick_action_model.dart';
+import '../utils/app_colors.dart';
 
 class PaymentScheduleScreen extends StatelessWidget {
   final PaymentScheduleController _controller = Get.put(PaymentScheduleController());
@@ -314,7 +315,3 @@ class PaymentScheduleScreen extends StatelessWidget {
   }
 }
 
-class AppColors {
-  static const Color primaryColor = Color(0xFF2A4BA0);
-  static const Color secondaryColor = Color(0xFF153075);
-}

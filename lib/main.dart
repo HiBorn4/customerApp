@@ -1,3 +1,4 @@
+import 'package:customerapp/screens/cost_sheet_screen.dart';
 import 'package:customerapp/screens/login_screen.dart';
 import 'package:customerapp/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       // home: HomeScreen(),
-      home: PaymentScheduleScreen(),
-      // home: ProjectDetailScreen(),
-      // home: SignupScreen(),
+      home: CostSheetScreen(),
       // initialRoute: "/",
       getPages: [
         // GetPage(name: '/', page: () => LoginScreen()),
