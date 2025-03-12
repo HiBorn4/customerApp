@@ -100,7 +100,7 @@ class NeedsAttentionItem extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Sharp corners
                         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                       ),
-                      onPressed: () => Get.toNamed('/payment'),
+                      onPressed: () => Get.toNamed('/payment-schedule'),
                       child: Text(
                         'Pay Now',
                         style: TextStyle(

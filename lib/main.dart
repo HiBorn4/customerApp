@@ -3,6 +3,7 @@ import 'package:customerapp/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'screens/home_screen.dart';
+import 'screens/payment_schedule_screen.dart';
 import 'screens/project_detail_screen.dart';
 
 void main() {
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      // home: HomeScreen(),
+      home: PaymentScheduleScreen(),
       // home: ProjectDetailScreen(),
       // home: SignupScreen(),
       // initialRoute: "/",
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
         // GetPage(name: '/', page: () => LoginScreen()),
         GetPage(name: '/home', page: () => HomeScreen()),
         GetPage(name: '/login', page: () => LoginScreen()),
+        GetPage(name: '/payment-schedule', page: () => PaymentScheduleScreen()),
         // GetPage(name: '/payment', page: () => PaymentScreen()),
         // GetPage(name: '/attention', page: () => AttentionScreen()),
         GetPage(name: '/project-detail', page: () => ProjectDetailScreen()),
