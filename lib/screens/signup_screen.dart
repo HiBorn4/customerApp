@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class SignupScreen extends StatefulWidget {
+import 'login_screen.dart';
+
+class SignupScreen extends StatefulWidget { 
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -63,7 +65,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Get.toNamed('/login');
+                  // Navigate to login screen with signup mode
+                  Get.to(() => LoginScreen(isSignup: true));
                 },
                 child: Text(
                   "Sign Up",
@@ -75,32 +78,32 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(height: screenHeight * 0.03),
 
             // Login Text Button
-Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    Text(
-      "Have an account? ",
-      style: TextStyle(
-        fontSize: screenHeight * 0.02,
-        color: Colors.black, // Black text
-      ),
-    ),
-    GestureDetector(
-      onTap: () {
-        Get.toNamed('/login');
-      },
-      child: Text(
-        "Log In",
-        style: TextStyle(
-          fontSize: screenHeight * 0.02,
-          color: Colors.purple, // Purple button-like text
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  ],
-),
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Have an account? ",
+                  style: TextStyle(
+                    fontSize: screenHeight * 0.02,
+                    color: Colors.black, // Black text
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to login screen with login mode
+                    Get.to(() => LoginScreen(isSignup: false));
+                  },
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(
+                      fontSize: screenHeight * 0.02,
+                      color: Colors.purple, // Purple button-like text
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

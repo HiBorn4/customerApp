@@ -1,5 +1,9 @@
+import 'package:customerapp/screens/activity_log_screen.dart';
 import 'package:customerapp/screens/cost_sheet_screen.dart';
 import 'package:customerapp/screens/login_screen.dart';
+import 'package:customerapp/screens/modification_screen.dart';
+import 'package:customerapp/screens/otp_screen.dart';
+import 'package:customerapp/screens/profile_screen.dart';
 import 'package:customerapp/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,17 +27,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: HomeScreen(),
-      home: CostSheetScreen(),
-      // initialRoute: "/",
+      home: SignupScreen(),
+      initialRoute: "/",
       getPages: [
-        // GetPage(name: '/', page: () => LoginScreen()),
-        GetPage(name: '/home', page: () => HomeScreen()),
+        GetPage(name: '/', page: () => SignupScreen()),
         GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/payment-schedule', page: () => PaymentScheduleScreen()),
-        // GetPage(name: '/payment', page: () => PaymentScreen()),
-        // GetPage(name: '/attention', page: () => AttentionScreen()),
+        GetPage(name: '/home', page: () => HomeScreen()),
         GetPage(name: '/project-detail', page: () => ProjectDetailScreen()),
+        GetPage(name: '/payment-schedule', page: () => PaymentScheduleScreen()),
+        GetPage(name: '/cost-sheet', page: () => CostSheetScreen()),
+        GetPage(name: '/activity-log', page: () => ActivityLogScreen()),
+        GetPage(name: '/modification', page: () => ModificationScreen()),
+        GetPage(name: '/profile', page: () => ProfileScreen()),
       ],
     );
   }
