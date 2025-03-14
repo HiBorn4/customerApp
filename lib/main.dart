@@ -7,11 +7,22 @@ import 'package:customerapp/screens/profile_screen.dart';
 import 'package:customerapp/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'screens/home_screen.dart';
 import 'screens/payment_schedule_screen.dart';
 import 'screens/project_detail_screen.dart';
+import 'services/auth_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures Flutter is initialized properly
+
+  try {
+    await Firebase.initializeApp(); // Initialize Firebase
+    print("✅ Firebase Initialized Successfully");
+  } catch (e) {
+    print("🔥 Firebase Initialization Error: $e");
+  }
+
   runApp(MyApp());
 }
 
@@ -22,16 +33,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Home Screen',
+      title: 'Customer App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SignupScreen(),
+      initialBinding: BindingsBuilder(() {
+        Get.put(AuthService()); // Inject AuthService for authentication management
+      }),
       initialRoute: "/",
       getPages: [
         GetPage(name: '/', page: () => SignupScreen()),
         GetPage(name: '/login', page: () => LoginScreen()),
+        // GetPage(name: '/otp', page: () => OtpScreen()), // Added OTP screen
         GetPage(name: '/home', page: () => HomeScreen()),
         GetPage(name: '/project-detail', page: () => ProjectDetailScreen()),
         GetPage(name: '/payment-schedule', page: () => PaymentScheduleScreen()),

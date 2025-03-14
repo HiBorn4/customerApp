@@ -362,7 +362,9 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
     child: Column(
       children: [
         GestureDetector(
-          onTap: onTap,
+          onTap: ()=>
+             Get.toNamed('/cost-sheet'),
+          
           child: Container(
             width: containerSize,
             height: containerSize,
@@ -481,18 +483,21 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
             ),
 
             // Right Arrow (White arrow inside black circle)
-            Container(
-              width: screenWidth * 0.08,
-              height: screenWidth * 0.08,
-              decoration: BoxDecoration(
-                color: Colors.black, // Black circle
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  size: screenWidth * 0.05,
-                  color: Colors.white, // White arrow
+            GestureDetector(
+              onTap: () => Get.toNamed('/modification'),
+              child: Container(
+                width: screenWidth * 0.08,
+                height: screenWidth * 0.08,
+                decoration: BoxDecoration(
+                  color: Colors.black, // Black circle
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: screenWidth * 0.05,
+                    color: Colors.white, // White arrow
+                  ),
                 ),
               ),
             ),

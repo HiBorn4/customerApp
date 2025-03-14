@@ -569,7 +569,7 @@ Widget _buildDashedDivider() {
             )),
         trailing: Icon(Icons.arrow_forward_ios, 
             size: screenHeight * 0.02),
-        onTap: () => {}
+        onTap: () =>  Get.toNamed('/activity-log'),
       ),
     );
   }

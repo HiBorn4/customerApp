@@ -5,9 +5,9 @@ import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   final bool isSignup;
-  
+
   const LoginScreen({Key? key, this.isSignup = false}) : super(key: key);
-  
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -15,11 +15,19 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
   bool _isChecked = false;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  
-  // Get the auth service
-  final AuthService _authService = Get.find<AuthService>();
+
+  final TextEditingController _emailController =
+      TextEditingController(text: "test@example.com"); // Default Email
+  final TextEditingController _passwordController =
+      TextEditingController(text: "Pass123"); // Default Password
+
+  late final AuthService _authService;
+
+  @override
+  void initState() {
+    super.initState();
+    _authService = Get.find<AuthService>(); // Get the already initialized service
+  }
 
   @override
   void dispose() {
@@ -28,82 +36,26 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  bool _validateEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-  }
-
-  bool _validatePassword(String password) {
-    // Require at least 6 characters
-    return password.length >= 6;
-  }
-
   void _handleContinue() async {
-    // Reset local error message
-    String localError = '';
-    
-    String email = _emailController.text.trim();
-    String password = _passwordController.text;
-    
-    // Input validation
-    if (email.isEmpty) {
-      setState(() {
-        localError = 'Email is required';
-      });
-      return;
-    }
-    
-    if (!_validateEmail(email)) {
-      setState(() {
-        localError = 'Please enter a valid email address';
-      });
-      return;
-    }
-    
-    if (password.isEmpty) {
-      setState(() {
-        localError = 'Password is required';
-      });
-      return;
-    }
-    
-    if (!_validatePassword(password)) {
-      setState(() {
-        localError = 'Password must be at least 6 characters';
-      });
-      return;
-    }
-    
     try {
-      // Check if this is signup or login mode
-      if (widget.isSignup) {
-        // SIGNUP FLOW: Create new user
-        final user = await _authService.signUp(email, password);
-        
-        if (user != null) {
-          // Navigate to OTP verification screen
+      final email = _emailController.text.trim();
+      final password = _passwordController.text;
+
+      // LOGIN FLOW
+      final user = await _authService.signIn(email, password);
+
+      if (user != null) {
+        // Email Verified → Go to Home
+        if (user.emailVerified) {
+          Get.offAllNamed('/home');
+        } else {
+          // Email not verified → Send OTP
+          await _authService.sendOTP();
           Get.toNamed('/otp', arguments: {'email': email});
-        }
-      } else {
-        // LOGIN FLOW: Sign in existing user
-        final user = await _authService.signIn(email, password);
-        
-        if (user != null) {
-          // Check if email is verified
-          if (!user.emailVerified) {
-            // Email not verified, send to OTP screen
-            await _authService.sendOTP();
-            Get.toNamed('/otp', arguments: {'email': email});
-          } else {
-            // Email verified, go to home
-            Get.offAllNamed('/home');
-          }
         }
       }
     } catch (e) {
-      // Handle any unexpected errors
-      setState(() {
-        localError = 'An unexpected error occurred';
-      });
+      print("🔥 Login Error: $e");
     }
   }
 
@@ -119,9 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
                   child: Column(
                     children: [
@@ -133,9 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: EdgeInsets.only(left: 20, bottom: 30),
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          widget.isSignup
-                              ? "Create Account\nPlease enter\nyour details."
-                              : "Sales Team Only\nTell us your login\ndetails.",
+                          "Sales Team Only\nTell us your login\ndetails.",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: screenWidth * 0.06,
@@ -148,7 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       Expanded(
                         child: Container(
                           color: Colors.white,
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -161,13 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 decoration: InputDecoration(
                                   labelText: "Email",
                                   border: OutlineInputBorder(),
-                                  suffixIcon: _emailController.text.isNotEmpty && _validateEmail(_emailController.text)
-                                      ? Icon(Icons.check_circle, color: Colors.green)
-                                      : null,
                                 ),
-                                onChanged: (value) {
-                                  setState(() {});
-                                },
                               ),
 
                               SizedBox(height: screenHeight * 0.02),
@@ -181,7 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   border: OutlineInputBorder(),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                      _isPasswordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -192,80 +137,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
 
-                              // Error message from auth service
-                              Obx(() {
-                                if (_authService.errorMessage.value.isNotEmpty) {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                                    child: Text(
-                                      _authService.errorMessage.value,
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: screenWidth * 0.035,
-                                      ),
-                                    ),
-                                  );
-                                }
-                                return SizedBox.shrink();
-                              }),
-
-                              SizedBox(height: screenHeight * 0.02),
-
-                              // Checkbox for Call & Activity Logs
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: _isChecked,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _isChecked = value!;
-                                      });
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: Text("Allow to capture call and other activity logs"),
-                                  ),
-                                ],
-                              ),
-
                               SizedBox(height: screenHeight * 0.03),
 
-                              // Agree & Continue Button
+                              // Login Button
                               SizedBox(
                                 width: double.infinity,
-                                child: Obx(() => ElevatedButton(
+                                child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.purple,
-                                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  onPressed: _authService.isLoading.value ? null : _handleContinue,
-                                  child: _authService.isLoading.value
-                                      ? SizedBox(
-                                          height: screenWidth * 0.05, 
-                                          width: screenWidth * 0.05,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 3,
-                                          ),
-                                        )
-                                      : Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              widget.isSignup ? "Continue" : "Agree & Continue",
-                                              style: TextStyle(
-                                                fontSize: screenWidth * 0.05,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            SizedBox(width: screenWidth * 0.02),
-                                            Icon(Icons.arrow_forward, color: Colors.white),
-                                          ],
-                                        ),
-                                )),
+                                  // onPressed: _handleContinue,
+                                  onPressed: () => Get.toNamed('/home'),
+                                  child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.05,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
 
                               SizedBox(height: screenHeight * 0.03),

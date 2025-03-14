@@ -88,7 +88,7 @@ class HomeContent extends StatelessWidget {
             padding: EdgeInsets.only(right: Responsive.getPadding(screenWidth).horizontal * 0.3),
             child: IconButton(
               icon: Icon(Icons.settings, size: Responsive.getFontSize(screenWidth, 40)),
-              onPressed: () => Get.toNamed('/settings'),
+              onPressed: () => Get.toNamed('/profile'),
             ),
           ),
         ],

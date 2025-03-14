@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../services/auth_service.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget { 
@@ -11,6 +12,14 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final PageController _pageController = PageController();
+  late final AuthService _authService;
+  
+  @override
+  void initState() {
+    super.initState();
+    _authService = Get.find<AuthService>(); // Get the already initialized service
+  }
+
 
   @override
   Widget build(BuildContext context) {
