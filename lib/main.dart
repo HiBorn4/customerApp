@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         Get.put(AuthService()); // Inject AuthService for authentication management
       }),
       initialRoute: "/",
-      home: DocumentsScreen(),
+      home: SignupScreen(),
       getPages: [
         GetPage(name: '/', page: () => SignupScreen()),
         GetPage(name: '/login', page: () => LoginScreen()),
