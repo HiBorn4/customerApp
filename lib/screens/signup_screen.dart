@@ -53,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
               controller: _pageController,
               count: 3,
               effect: ExpandingDotsEffect(
-                activeDotColor: Colors.purple,
+                activeDotColor: Color(0xFFDBD3FD),
                 dotColor: Colors.grey[400]!,
                 dotHeight: screenHeight * 0.012,
                 dotWidth: screenWidth * 0.03,
@@ -67,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
               width: screenWidth*0.4,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Color(0xFFDBD3FD),
                   padding: EdgeInsets.symmetric(vertical: screenHeight * 0.018),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -79,7 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
                 child: Text(
                   "Sign Up",
-                  style: TextStyle(fontSize: screenHeight * 0.022, color: Colors.white),
+                  style: TextStyle(fontSize: screenHeight * 0.022, color: Colors.black),
                 ),
               ),
             ),
@@ -103,13 +103,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     Get.to(() => LoginScreen(isSignup: false));
                   },
                   child: Text(
-                    "Log In",
-                    style: TextStyle(
-                      fontSize: screenHeight * 0.02,
-                      color: Colors.purple, // Purple button-like text
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+  "Log In",
+  style: TextStyle(
+    fontSize: screenHeight * 0.02,
+    color: Colors.purple, // Corrected hex color format
+    fontWeight: FontWeight.bold,
+  ),
+),
                 ),
               ],
             ),

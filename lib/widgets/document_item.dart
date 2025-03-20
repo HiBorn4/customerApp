@@ -25,7 +25,7 @@ class DocumentItem extends StatelessWidget {
             Icon(
               document.icon,
               size: screenWidth * 0.06,
-              color: Colors.blueAccent,
+              color: Colors.black,
             ),
             SizedBox(width: screenWidth * 0.06),
 

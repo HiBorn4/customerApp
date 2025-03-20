@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: EdgeInsets.only(left: 20, bottom: 30),
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          "Sales Team Only\nTell us your login\ndetails.",
+                          "Customer App\nTell us your login\ndetails.",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: screenWidth * 0.06,
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.purple,
+                                    backgroundColor: Color(0xFFDBD3FD),
                                     padding:
                                         EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                                     shape: RoundedRectangleBorder(
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     "Login",
                                     style: TextStyle(
                                       fontSize: screenWidth * 0.05,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),

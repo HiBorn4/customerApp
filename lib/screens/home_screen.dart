@@ -29,31 +29,47 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_selectedIndex], // Shows selected page
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.blue, // Active tab color
-        unselectedItemColor: Colors.grey, // Inactive tab color
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: _pages[_selectedIndex], // Shows selected page
+    bottomNavigationBar: BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      selectedItemColor: Colors.black, // Active tab color
+      unselectedItemColor: Colors.grey, // Inactive tab color
+      items: [
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/icons/home.png', // Replace with your custom icon path
+            width: 24, 
+            height: 24,
+            color: _selectedIndex == 0 ? Colors.black : Colors.grey, // Dynamic color change
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.folder),
-            label: "Documents",
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/icons/units.png', // Replace with your custom icon path
+            width: 24,
+            height: 24,
+            color: _selectedIndex == 1 ? Colors.black : Colors.grey,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: "Applicants",
+          label: "Documents",
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/icons/profile.png', // Replace with your custom icon path
+            width: 24,
+            height: 24,
+            color: _selectedIndex == 2 ? Colors.black : Colors.grey,
           ),
-        ],
-      ),
-    );
-  }
+          label: "Applicants",
+        ),
+      ],
+    ),
+  );
+}
+
 }
 
 // Separate Widget for Home Page Content
@@ -67,32 +83,36 @@ class HomeContent extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Good Morning...!',
-              style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 20)),
-            ),
-            Text(
-              'Vishal',
-              style: TextStyle(
-                fontSize: Responsive.getFontSize(screenWidth, 28),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: Responsive.getPadding(screenWidth).horizontal * 0.3),
-            child: IconButton(
-              icon: Icon(Icons.settings, size: Responsive.getFontSize(screenWidth, 40)),
-              onPressed: () => Get.toNamed('/profile'),
-            ),
-          ),
-        ],
+  leading: Padding(
+  padding: EdgeInsets.all(screenWidth * 0.02), // Dynamic padding
+  child: ClipOval(
+    child: Image.asset(
+      'assets/home_profile.png', // Replace with your actual image path
+      width: screenWidth * 0.1,  // Dynamic width
+      height: screenWidth * 0.1, // Ensuring a square aspect ratio for a perfect circle
+      fit: BoxFit.cover, // Ensures the image fully covers the circular shape
+    ),
+  ),
+),
+
+  title: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Good Morning...!',
+        style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 20), fontWeight: FontWeight.bold,),
       ),
+      Text(
+        'Vishal',
+        style: TextStyle(
+          fontSize: Responsive.getFontSize(screenWidth, 28),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ],
+  ),
+),
+
       body: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +120,7 @@ class HomeContent extends StatelessWidget {
           Container(
             color: Colors.grey[100],
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(Responsive.getPadding(screenWidth).horizontal * 0.3),
+              padding: EdgeInsets.all(Responsive.getPadding(screenWidth).horizontal * 0.35),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,7 +148,7 @@ class HomeContent extends StatelessWidget {
       children: [
         Text(
           'SUMMARY ACROSS UNIT',
-          style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14), fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14)),
         ),
         SizedBox(height: screenWidth * 0.02),
         Row(
@@ -148,7 +168,7 @@ class HomeContent extends StatelessWidget {
       children: [
         Text(
           'NEEDS ATTENTION',
-          style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14), fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14)),
         ),
         SizedBox(height: screenHeight * 0.01),
         ListView.builder(
@@ -184,7 +204,7 @@ class HomeContent extends StatelessWidget {
       children: [
         Text(
           'MY UNITS',
-          style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14), fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14)),
         ),
         SizedBox(height: screenHeight * 0.01),
         ListView.builder(
@@ -217,7 +237,7 @@ class HomeContent extends StatelessWidget {
     children: [
       Text(
         'UPCOMING PROJECTS',
-        style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14), fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: Responsive.getFontSize(screenWidth, 14)),
       ),
       SizedBox(height: screenHeight * 0.02),
 
@@ -262,29 +282,22 @@ Widget _buildFooterSection(double screenWidth) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // "Shuba" with Artistic Styled "H"
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: shubaFontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            children: [
-              TextSpan(text: "S"),
-              TextSpan(
-                text: "H",
-                style: TextStyle(
-                  fontSize: shubaHFontSize,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.redAccent, // Styled "H"
-                ),
-              ),
-              TextSpan(text: "UBA"),
-            ],
-          ),
-        ),
+        Center(
+  child: Image.asset(
+    'assets/shubha.png', // Replace with your actual image path
+    width: shubaFontSize * 6, // Adjust size dynamically based on font size
+    fit: BoxFit.contain, // Ensures the image scales properly
+  ),
+),
 
-        SizedBox(height: screenWidth * 0.02),
+
+        SizedBox(height: screenWidth * 0.03),
+        Text(
+          "Address",
+          style: TextStyle(color: Colors.white, fontSize: fontSize, fontWeight: FontWeight.bold,),
+          textAlign: TextAlign.center,
+          
+        ),
 
         // Address
         Text(
@@ -303,7 +316,7 @@ Widget _buildFooterSection(double screenWidth) {
           child: Text(
             "View in Map",
             style: TextStyle(
-              color: Colors.blueAccent,
+              color: Colors.grey,
               fontSize: fontSize,
               decoration: TextDecoration.underline,
             ),
@@ -346,34 +359,39 @@ Widget _buildFooterSection(double screenWidth) {
 
         // Social Media Icons
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildSocialIcon(Icons.call, Colors.green, iconSize, () {
-              // Handle WhatsApp click
-            }),
-            _buildSocialIcon(Icons.camera_alt, Colors.pink, iconSize, () {
-              // Handle Instagram click
-            }),
-            _buildSocialIcon(Icons.alternate_email, Colors.blue, iconSize, () {
-              // Handle X (Twitter) click
-            }),
-            _buildSocialIcon(Icons.facebook, Colors.blueAccent, iconSize, () {
-              // Handle Facebook click
-            }),
-          ],
-        ),
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    _buildSocialIcon('assets/whatsapp.png', iconSize, () {
+      // Handle WhatsApp click
+    }),
+    _buildSocialIcon('assets/insta.png', iconSize, () {
+      // Handle Instagram click
+    }),
+    _buildSocialIcon('assets/x.png', iconSize, () {
+      // Handle X (Twitter) click
+    }),
+    _buildSocialIcon('assets/fb.png', iconSize, () {
+      // Handle Facebook click
+    }),
+  ],
+),
+
       ],
     ),
   );
 }
 
-// Social Media Icon Widget
-Widget _buildSocialIcon(IconData icon, Color color, double size, VoidCallback onTap) {
+Widget _buildSocialIcon(String assetPath, double size, VoidCallback onTap) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 10), // Even spacing
     child: GestureDetector(
       onTap: onTap,
-      child: Icon(icon, color: color, size: size),
+      child: Image.asset(
+        assetPath,
+        width: size,
+        height: size,
+        fit: BoxFit.contain, // Ensures proper scaling
+      ),
     ),
   );
 }

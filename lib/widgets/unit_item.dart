@@ -41,7 +41,7 @@ class UnitItem extends StatelessWidget {
                     Text(
                       'Shuba Eco Stone',
                       style: TextStyle(
-                        fontSize: screenWidth * 0.04,
+                        fontSize: screenWidth * 0.03,
                         fontWeight: FontWeight.w900,
                       ),
                     ),

@@ -192,7 +192,7 @@ Widget _buildDashedDivider() {
               style: TextStyle(
                 fontSize: screenHeight * 0.018,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue,
+                color: Colors.black,
               )),
         ],
       ),
@@ -458,7 +458,7 @@ Widget _buildDashedDivider() {
                   child: Text('View all',
                       style: TextStyle(
                         fontSize: screenHeight * 0.016,
-                        color: Colors.blue,
+                        color: Colors.black,
                       )),
                 ),
               ],

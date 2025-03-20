@@ -1,116 +1,114 @@
-// import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-// class DocumentUpload {
-//   final String name;
-//   final String date;
-//   final String size;
-//   final String thumbnailPath;
+import '../models/document_model.dart';
+import 'package:file_picker/file_picker.dart';
 
-//   DocumentUpload({
-//     required this.name,
-//     required this.date,
-//     required this.size,
-//     required this.thumbnailPath,
-//   });
-// }
+class DocumentsController extends GetxController {
+  final recentUploads = <DocumentModel>[].obs;
+  final documents = <DocumentModel>[].obs;
+  final sortValue = 'Latest'.obs;
 
-// class Document {
-//   final String name;
-//   final String date;
-//   final String size;
-//   final String iconPath;
+  @override
+  void onInit() {
+    super.onInit();
+    _loadInitialData();
+  }
 
-//   Document({
-//     required this.name,
-//     required this.date,
-//     required this.size,
-//     required this.iconPath,
-//   });
-// }
+  void _loadInitialData() {
+    recentUploads.assignAll([
+      DocumentModel(
+        name: 'Land Agreement',
+        date: '12/12/2025',
+        fileSize: '0.300 KB',
+        icon: Icons.description, // Icon instead of image
+      ),
+    ]);
 
-// class DocumentsController extends GetxController {
-//   final recentUploads = <DocumentUpload>[].obs;
-//   final documents = <Document>[].obs;
-//   final sortValue = 'Latest'.obs;
+    documents.assignAll([
+      DocumentModel(
+        name: 'Main Contract',
+        date: '15/12/2025',
+        fileSize: '1.2 MB',
+        icon: Icons.article, // Different icon for different types
+      ),
+    ]);
+  }
 
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     _loadInitialData();
-//   }
+  Future<void> uploadDocument() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null) {
+        // Handle file upload logic
+        Get.snackbar(
+          'Success',
+          'File uploaded successfully',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to upload document: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 
-//   void _loadInitialData() {
-//     recentUploads.assignAll([
-//       DocumentUpload(
-//         name: 'Land Agreement',
-//         date: '12/12/2025',
-//         size: '0.300 kb',
-//         thumbnailPath: 'assets/images/doc_thumbnail1.jpg',
-//       ),
-//     ]);
+  void sortDocuments(String value) {
+    sortValue.value = value;
+    documents.sort((a, b) => value == 'Latest' 
+        ? b.date.compareTo(a.date) 
+        : a.date.compareTo(b.date));
+  }
 
-//     documents.assignAll([
-//       Document(
-//         name: 'Agreement',
-//         date: '28/12/2025',
-//         size: '0.3 mb',
-//         iconPath: 'assets/icons/document.svg',
-//       ),
-//     ]);
-//   }
+  void showDocumentOptions(DocumentModel document) {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.download),
+              title: Text('Download'),
+              onTap: () {
+                Get.back();
+                downloadDocument(document);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.delete),
+              title: Text('Delete'),
+              onTap: () {
+                Get.back();
+                deleteDocument(document);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-//   void uploadDocument() async {
-//     Get.snackbar(
-//       'Upload Document',
-//       'File picker implementation needed',
-//       snackPosition: SnackPosition.BOTTOM,
-//     );
-//   }
+  void downloadDocument(DocumentModel document) {
+    Get.snackbar(
+      'Download',
+      'Starting download: ${document.name}',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
 
-//   void sortDocuments(String value) {
-//     sortValue.value = value;
-//     // Add actual sorting logic here
-//   }
-
-//   void showDocumentOptions(Document document) {
-//     Get.bottomSheet(
-//       Container(
-//         padding: EdgeInsets.all(20),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             ListTile(
-//               leading: Icon(Icons.download),
-//               title: Text('Download'),
-//               onTap: () {
-//                 Get.back();
-//                 downloadDocument(document);
-//               },
-//             ),
-//             ListTile(
-//               leading: Icon(Icons.delete),
-//               title: Text('Delete'),
-//               onTap: () {
-//                 Get.back();
-//                 deleteDocument(document);
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
-//       backgroundColor: Colors.white,
-//     );
-//   }
-
-//   void downloadDocument(Document document) {
-//     Get.snackbar(
-//       'Download',
-//       'Downloading ${document.name}...',
-//       snackPosition: SnackPosition.BOTTOM,
-//     );
-//   }
-
-//   void deleteDocument(Document document) {
-//     documents.remove(document);
-//   }
-// }
+  void deleteDocument(DocumentModel document) {
+    documents.remove(document);
+    Get.snackbar(
+      'Deleted',
+      'Document removed successfully',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+}
