@@ -4,9 +4,6 @@ import 'package:get/get.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
-  final bool isSignup;
-
-  const LoginScreen({Key? key, this.isSignup = false}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -47,11 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) {
         // Email Verified → Go to Home
         if (user.emailVerified) {
-          Get.offAllNamed('/home');
+          Get.offAllNamed('/');
         } else {
-          // Email not verified → Send OTP
-          await _authService.sendOTP();
-          Get.toNamed('/otp', arguments: {'email': email});
+          Get.offAllNamed('/home');
+
         }
       }
     } catch (e) {
@@ -151,8 +147,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  // onPressed: _handleContinue,
-                                  onPressed: () => Get.toNamed('/home'),
+                                  onPressed: _handleContinue,
+                                  // onPressed: () => Get.toNamed('/home'),
                                   child: Text(
                                     "Login",
                                     style: TextStyle(
