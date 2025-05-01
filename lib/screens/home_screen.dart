@@ -1,3 +1,4 @@
+import 'package:customerapp/screens/projects_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,9 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     HomeContent(),
-    Center(
-      child: Text("Documents Page", style: GoogleFonts.outfit()),
-    ), // Placeholder for Documents
+    ProjectsScreen(),
+    // Center(
+    //   child: Text("Documents Page", style: GoogleFonts.outfit()),
+    // ), // Placeholder for Documents
     ProfileScreen(),
     // Center(
     //   child: Text("Applicants Page", style: GoogleFonts.outfit()),
@@ -60,17 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_add_alt_1,
-              color: _selectedIndex == 1 ? Colors.black : Colors.grey,
-            ),
-            // icon: Image.asset(
-            //   'assets/icons/units.png', // Replace with your custom icon path
-            // width: 24,
-            // height: 24,
-
+            // icon: Icon(
+            //   Icons.person_add_alt_1,
+            //   color: _selectedIndex == 1 ? Colors.black : Colors.grey,
             // ),
-            label: "Refer",
+            icon: Image.asset(
+              'assets/icons/units.png', // Replace with your custom icon path
+            width: 24,
+            height: 24,
+
+            ),
+            label: "Projects",
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
