@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SummaryItem extends StatelessWidget {
   final String value;
   final String label;
   final double screenWidth;
 
-  const SummaryItem({
+  const SummaryItem({super.key, 
     required this.value,
     required this.label,
     required this.screenWidth,
@@ -27,17 +28,19 @@ class SummaryItem extends StatelessWidget {
         children: [
           Text(
             value,
-            style: TextStyle(
-              fontSize: screenWidth * 0.04,
-              fontWeight: FontWeight.w900,
+            style: GoogleFonts.outfit(
+              fontSize: screenWidth * 0.039,
+              fontWeight: FontWeight.w600,
+              color: Colors.black
             ),
           ),
           SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
+            style: GoogleFonts.outfit(
               fontSize: screenWidth * 0.03,
-              color: Colors.grey[800],
+              color: Color(0xff656567),
+              fontWeight: FontWeight.w400,
             ),
           ),
           Icon(Icons.arrow_forward, size: screenWidth * 0.05),

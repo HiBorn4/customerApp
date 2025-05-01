@@ -13,7 +13,7 @@ class PaymentScheduleController extends GetxController {
       description: 'On Booking',
       amount: '₹ 1,32,000',
       status: 'RECEIVED',
-      statusColor: Colors.green,
+      statusColor: Color(0xff1B6600),
     ),
     PaymentEntry(
       number: '02',
@@ -21,7 +21,7 @@ class PaymentScheduleController extends GetxController {
       description: 'On execution of Agreement',
       amount: '₹ 2,50,000',
       status: 'DUE TODAY',
-      statusColor: Colors.red,
+      statusColor: Color(0xff960000),
     ),
     PaymentEntry(
       number: '03',
@@ -29,7 +29,7 @@ class PaymentScheduleController extends GetxController {
       description: 'On Completion of Plinth',
       amount: '₹ 3,75,000',
       status: 'DUE IN 3 DAYS',
-      statusColor: Colors.green,
+      statusColor: Color(0xff1B6600),
     ),
     PaymentEntry(
       number: '04',
@@ -37,7 +37,7 @@ class PaymentScheduleController extends GetxController {
       description: 'On Completion of 1st Floor',
       amount: '₹ 4,00,000',
       status: 'DUE IN 3 DAYS',
-      statusColor: Colors.green,
+      statusColor: Color(0xff1B6600),
     ),
     PaymentEntry(
       number: '05',

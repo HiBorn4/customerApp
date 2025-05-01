@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../controllers/payment_schedule_controller.dart';
 import '../models/payment_entry_model.dart';
 import '../models/quick_action_model.dart';
 import '../utils/app_colors.dart';
 
 class PaymentScheduleScreen extends StatelessWidget {
-  final PaymentScheduleController _controller = Get.put(PaymentScheduleController());
+  final PaymentScheduleController _controller = Get.put(
+    PaymentScheduleController(),
+  );
+
+  PaymentScheduleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +49,37 @@ class PaymentScheduleScreen extends StatelessWidget {
         children: [
           Text(
             'Payment Schedule',
-            style: TextStyle(
-              fontSize: screenHeight * 0.022,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.outfit(
+              color: Color(0xff191B1C),
+              fontSize: screenHeight * 0.021,
+              fontWeight: FontWeight.w600,
             ),
           ),
+          SizedBox(height: screenWidth * 0.01),
           Text(
             'Shuba Ecostone - 131',
-            style: TextStyle(
+            style: GoogleFonts.outfit(
               fontSize: screenHeight * 0.016,
+              color: Color(0xff656567),
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(height: screenWidth * 0.02),
+          Center(
+            child: Container(
+              width: screenHeight * 0.35,
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.transparent,
+                    Colors.grey.shade400,
+                    Colors.transparent,
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -65,17 +92,19 @@ class PaymentScheduleScreen extends StatelessWidget {
       children: [
         Text(
           'TOTAL BALANCE',
-          style: TextStyle(
-            fontSize: screenHeight * 0.018,
-            color: Colors.grey,
+          style: GoogleFonts.outfit(
+            fontSize: screenHeight * 0.015,
+            color: Color(0xff656567),
+            fontWeight: FontWeight.w400,
           ),
         ),
         SizedBox(height: screenHeight * 0.01),
         Text(
           '₹ 1,11,32,000',
-          style: TextStyle(
+          style: GoogleFonts.outfit(
+            color: Color(0xff191B1C),
             fontSize: screenHeight * 0.035,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
@@ -83,25 +112,32 @@ class PaymentScheduleScreen extends StatelessWidget {
   }
 
   Widget _buildPaymentList(double screenWidth, double screenHeight) {
-    return Obx(() => ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: _controller.payments.length,
-      itemBuilder: (context, index) => _buildPaymentItem(
-        screenWidth,
-        screenHeight,
-        _controller.payments[index],
+    return Obx(
+      () => ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _controller.payments.length,
+        itemBuilder:
+            (context, index) => _buildPaymentItem(
+              screenWidth,
+              screenHeight,
+              _controller.payments[index],
+            ),
       ),
-    ));
+    );
   }
 
-  Widget _buildPaymentItem(double screenWidth, double screenHeight, PaymentEntry payment) {
+  Widget _buildPaymentItem(
+    double screenWidth,
+    double screenHeight,
+    PaymentEntry payment,
+  ) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
       padding: EdgeInsets.all(screenHeight * 0.015),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(screenHeight * 0.01),
+        // borderRadius: BorderRadius.circular(screenHeight * 0.01),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -123,36 +159,36 @@ class PaymentScheduleScreen extends StatelessWidget {
                     height: screenHeight * 0.03,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.black,
+                      color: Color(0xff656567),
                     ),
                     child: Center(
                       child: Text(
                         payment.number,
-                        style: TextStyle(
+                        style: GoogleFonts.outfit(
                           fontSize: screenHeight * 0.015,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: screenWidth * 0.04),
+                  SizedBox(width: screenWidth * 0.02),
                   Text(
                     payment.date,
-                    style: TextStyle(
-                      fontSize: screenHeight * 0.016,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.outfit(
+                      fontSize: screenHeight * 0.014,
+                      color: Color(0xff656567),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
               Text(
                 payment.status,
-                style: TextStyle(
-                  fontSize: screenHeight * 0.016,
+                style: GoogleFonts.outfit(
+                  fontSize: screenHeight * 0.015,
                   color: payment.statusColor,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -160,9 +196,10 @@ class PaymentScheduleScreen extends StatelessWidget {
           SizedBox(height: screenHeight * 0.01),
           Text(
             payment.description,
-            style: TextStyle(
-              fontSize: screenHeight * 0.018,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.outfit(
+              color: Color(0xff656567),
+              fontSize: screenHeight * 0.017,
+              fontWeight: FontWeight.w400,
             ),
           ),
           SizedBox(height: screenHeight * 0.008),
@@ -172,21 +209,22 @@ class PaymentScheduleScreen extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   text: payment.amount,
-                  style: TextStyle(
+                  style: GoogleFonts.outfit(
                     fontSize: screenHeight * 0.018,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    decoration: payment.status == 'RECEIVED'
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
+                    color: Color(0xff656567),
+                    fontWeight: FontWeight.w600,
+                    decoration:
+                        payment.status == 'RECEIVED'
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                   ),
                   children: [
                     TextSpan(
                       text: ' Inc GST',
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.015,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.normal,
+                      style: GoogleFonts.outfit(
+                        fontSize: screenHeight * 0.012,
+                        color: Color(0xff656567),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -194,37 +232,35 @@ class PaymentScheduleScreen extends StatelessWidget {
               ),
               if (payment.status == 'RECEIVED')
                 Container(
-                  width: screenWidth * 0.25,
+                  width: screenWidth * 0.28,
                   height: screenHeight * 0.04,
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(screenHeight * 0.005),
+                    color: Color(0xffDFF6E0),
+                    // borderRadius: BorderRadius.circular(screenHeight * 0.005),
                   ),
                   child: Center(
                     child: Text(
                       'Paid',
-                      style: TextStyle(
+                      style: GoogleFonts.outfit(
                         fontSize: screenHeight * 0.016,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xff1B6600),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 )
               else if (payment.status == 'DUE TODAY')
                 Container(
-                  width: screenWidth * 0.25,
+                  width: screenWidth * 0.28,
                   height: screenHeight * 0.04,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFD7C5F4),
-                  ),
+                  decoration: BoxDecoration(color: Color(0xFFEDE9FE)),
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
                       'Pay Now',
-                      style: TextStyle(
+                      style: GoogleFonts.outfit(
                         fontSize: screenHeight * 0.016,
-                        color: AppColors.primaryColor,
+                        color: Color(0xff191B1C),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -232,19 +268,19 @@ class PaymentScheduleScreen extends StatelessWidget {
                 )
               else
                 Container(
-                  width: screenWidth * 0.3,
+                  width: screenWidth * 0.28,
                   height: screenHeight * 0.04,
                   decoration: BoxDecoration(
-                    color: Color(0xFFD7C5F4),
-                    borderRadius: BorderRadius.circular(screenHeight * 0.005),
+                    color: Color(0xFFEDE9FE),
+                    // borderRadius: BorderRadius.circular(screenHeight * 0.005),
                   ),
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
                       'Pay in Adv',
-                      style: TextStyle(
+                      style: GoogleFonts.outfit(
                         fontSize: screenHeight * 0.016,
-                        color: AppColors.primaryColor,
+                        color: Color(0xff191B1C),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -257,7 +293,6 @@ class PaymentScheduleScreen extends StatelessWidget {
     );
   }
 
-
   Widget _buildQuickActionsSection(double screenWidth, double screenHeight) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,45 +301,57 @@ class PaymentScheduleScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: screenHeight * 0.015),
           child: Text(
             'QUICK ACTIONS',
-            style: TextStyle(
-              fontSize: screenHeight * 0.02,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.outfit(
+              color: Color(0xff585A5C),
+              fontSize: screenHeight * 0.015,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        Obx(() => ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: _controller.quickActions.length,
-          itemBuilder: (context, index) => _buildQuickActionItem(
-            screenWidth,
-            screenHeight,
-            _controller.quickActions[index],
+        Obx(
+          () => ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: _controller.quickActions.length,
+            itemBuilder:
+                (context, index) => _buildQuickActionItem(
+                  screenWidth,
+                  screenHeight,
+                  _controller.quickActions[index],
+                ),
           ),
-        )),
+        ),
       ],
     );
   }
 
-  Widget _buildQuickActionItem(double screenWidth, double screenHeight, QuickActionModel action) {
+  Widget _buildQuickActionItem(
+    double screenWidth,
+    double screenHeight,
+    QuickActionModel action,
+  ) {
     return Container(
-      margin: EdgeInsets.all(screenWidth*0.01),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-      ),
+      height: screenWidth * 0.18,
+      margin: EdgeInsets.all(screenWidth * 0.01),
+      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: ListTile(
-        title: Text(action.title,
-            style: TextStyle(
-              fontSize: screenHeight * 0.018,
-              fontWeight: FontWeight.bold,
-            )),
-        subtitle: Text(action.description,
-            style: TextStyle(
-              fontSize: screenHeight * 0.015,
-              color: Colors.grey,
-            )),
-        trailing: Icon(Icons.arrow_forward_ios, 
-            size: screenHeight * 0.02),
+        title: Text(
+          action.title,
+          style: GoogleFonts.outfit(
+            color: Color(0xff191B1C),
+            fontSize: screenHeight * 0.018,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        subtitle: Text(
+          action.description,
+          style: GoogleFonts.outfit(
+            fontWeight: FontWeight.w400,
+            fontSize: screenHeight * 0.015,
+            color: Color(0xff9FA0A1),
+          ),
+        ),
+        trailing: Icon(Icons.arrow_forward_ios, size: screenHeight * 0.02),
         onTap: () => _handleQuickAction(action.title),
       ),
     );
@@ -314,4 +361,3 @@ class PaymentScheduleScreen extends StatelessWidget {
     // Implement navigation logic
   }
 }
-
