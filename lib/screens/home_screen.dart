@@ -7,8 +7,11 @@ import '../widgets/summary_item.dart';
 import '../widgets/unit_item.dart';
 import '../widgets/project_card.dart';
 import '../utils/responsive.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -19,8 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     HomeContent(),
-    Center(child: Text("Documents Page", style: GoogleFonts.outfit())), // Placeholder for Documents
-    Center(child: Text("Applicants Page", style: GoogleFonts.outfit())), // Placeholder for Applicants
+    Center(
+      child: Text("Documents Page", style: GoogleFonts.outfit()),
+    ), // Placeholder for Documents
+    ProfileScreen(),
+    // Center(
+    //   child: Text("Applicants Page", style: GoogleFonts.outfit()),
+    // ), // Placeholder for Applicants
   ];
 
   void _onItemTapped(int index) {
@@ -52,13 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/units.png', // Replace with your custom icon path
-              width: 24,
-              height: 24,
+            icon: Icon(
+              Icons.person_add_alt_1,
               color: _selectedIndex == 1 ? Colors.black : Colors.grey,
             ),
-            label: "Documents",
+            // icon: Image.asset(
+            //   'assets/icons/units.png', // Replace with your custom icon path
+            // width: 24,
+            // height: 24,
+
+            // ),
+            label: "Refer",
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -67,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 24,
               color: _selectedIndex == 2 ? Colors.black : Colors.grey,
             ),
-            label: "Applicants",
+            label: "Profile",
           ),
         ],
       ),
