@@ -57,7 +57,7 @@ class NeedsAttentionItem extends StatelessWidget {
                     ),
                     SizedBox(width: screenWidth * 0.02),
                     Text(
-                      'UNIT NO: ${unit.unitNo}',
+                      'UNIT NO: ${unit.unit_no}',
                       style: GoogleFonts.outfit(
                         fontWeight: FontWeight.w500,
                         fontSize: screenWidth * 0.03,
