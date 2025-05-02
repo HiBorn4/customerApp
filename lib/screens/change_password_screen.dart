@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import '../utils/responsive.dart';
 import '../controllers/password_controller.dart';
 
 class PasswordChangeScreen extends StatelessWidget {
   final PasswordController controller = Get.put(PasswordController());
+
+  PasswordChangeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,217 +15,272 @@ class PasswordChangeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
-        title: Text(
-          'Password',
-          style: TextStyle(
-            fontSize: screenWidth * 0.045,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,
+      appBar: _buildAppBar(screenWidth, screenHeight),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(screenWidth * 0.04),
-        child: Form(
-          key: controller.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildProfileSection(screenWidth, screenHeight),
-              SizedBox(height: screenHeight * 0.03),
-              _buildPasswordField(
-                context: context,
-                label: 'Old Password',
-                controller: controller,
-                textController: controller.oldPasswordController,
-                isHidden: controller.isOldPasswordHidden,
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              _buildPasswordField(
-                context: context,
-                label: 'New Password',
-                controller: controller,
-                textController: controller.newPasswordController,
-                isHidden: controller.isNewPasswordHidden,
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              _buildPasswordField(
-                context: context,
-                label: 'Confirm Password',
-                controller: controller,
-                textController: controller.confirmPasswordController,
-                isHidden: controller.isConfirmPasswordHidden,
-                validator: (value) {
-                  if (value != controller.newPasswordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () => Get.toNamed('/forgot-password'),
-                  child: Text(
-                    'FORGOT PASSWORD?',
-                    style: TextStyle(
-                      color: Colors.black, // Black text
-                      fontSize: screenWidth * 0.035,
-                      decoration: TextDecoration.none, // No underline
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: screenHeight * 0.05),
-              Center(
-                child: ElevatedButton(
-                  onPressed: controller.saveChanges,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFE6E6FA), // Light Lavender
-                    minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero, // Sharp edges
-                    ),
-                  ),
-                  child: Text(
-                    'Save Changes',
-                    style: TextStyle(
-                      color: Colors.black, // Black text
-                      fontSize: screenWidth * 0.04,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2,
-        selectedItemColor: Colors.black, // Black icons and text
-        unselectedItemColor: Colors.black,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Units',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        onTap: (index) {
-          if (index == 0) Get.offAllNamed('/home');
-          if (index == 1) Get.offAllNamed('/project-detail');
-        },
-      ),
-    );
-  }
-
-  /// 🔹 Profile Section Widget
-  Widget _buildProfileSection(double screenWidth, double screenHeight) {
-    return Card(
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero, // Sharp corners
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(screenHeight * 0.02),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: screenHeight * 0.06,
-              backgroundImage: AssetImage('assets/profile.jpeg'),
-            ),
-            SizedBox(width: screenWidth * 0.04),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('VISHAL KUMAR',
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.02,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Text('Joined on 29, Nov 2050',
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.016,
-                        color: Colors.grey,
-                      )),
-                ],
+            Center(
+              child: Container(
+                width: screenHeight * 0.35,
+                height: 1,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.transparent,
+                      Colors.grey.shade400,
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
               ),
             ),
-            IconButton(
-              icon: Icon(Icons.edit, size: screenHeight * 0.025),
-              onPressed: () {},
+            SizedBox(height: screenWidth * 0.03),
+
+            // Main content
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              child: Form(
+                key: controller.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProfileSection(screenWidth, screenHeight),
+                    SizedBox(height: screenWidth * 0.02),
+                    Center(
+                      child: Container(
+                        width: screenHeight * 0.4,
+                        height: 1,
+                        decoration: BoxDecoration(color: Colors.grey.shade300),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.05),
+                    _buildPasswordField(
+                      context: context,
+                      hintText: 'Old Password',
+                      controller: controller,
+                      textController: controller.oldPasswordController,
+                      isHidden: controller.isOldPasswordHidden,
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    _buildPasswordField(
+                      context: context,
+                      hintText: 'New Password',
+                      controller: controller,
+                      textController: controller.newPasswordController,
+                      isHidden: controller.isNewPasswordHidden,
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    _buildPasswordField(
+                      context: context,
+                      hintText: 'Confirm Password',
+                      controller: controller,
+                      textController: controller.confirmPasswordController,
+                      isHidden: controller.isConfirmPasswordHidden,
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                      validator: (value) {
+                        if (value != controller.newPasswordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Get.toNamed('/forgot-password'),
+                        child: Text(
+                          'FORGOT PASSWORD?',
+                          style: GoogleFonts.outfit(
+                            color: Colors.black,
+                            fontSize: Responsive.getFontSize(screenWidth, 15),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.05),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: controller.saveChanges,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFEDE9FE),
+                          minimumSize: Size(
+                            screenWidth * 0.9,
+                            screenHeight * 0.06,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                        ),
+                        child: Text(
+                          'Save Changes',
+                          style: GoogleFonts.outfit(
+                            color: Colors.black,
+                            fontSize: Responsive.getFontSize(screenWidth, 22),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
+
     );
   }
 
-  /// 🔹 Password Field with Eye Icon
+  PreferredSizeWidget _buildAppBar(double screenWidth, double screenHeight) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () => Get.back(),
+      ),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Password',
+            style: GoogleFonts.outfit(
+              color: Colors.black,
+              fontSize: Responsive.getFontSize(screenWidth, 24),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileSection(double screenWidth, double screenHeight) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(screenHeight * 0.02),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: screenHeight * 0.035,
+            backgroundImage: AssetImage('assets/profile.jpeg'),
+          ),
+          SizedBox(width: screenWidth * 0.04),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'VISHAL KUMAR',
+                      style: GoogleFonts.outfit(
+                        color: Colors.black,
+                        fontSize: Responsive.getFontSize(screenWidth, 20),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Joined on 29, Nov 2050',
+                      style: GoogleFonts.outfit(
+                        fontSize: Responsive.getFontSize(screenWidth, 14),
+                        color: Color(0xff656567),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    icon: Icon(Icons.edit, size: screenHeight * 0.025),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPasswordField({
     required BuildContext context,
-    required String label,
+    required String hintText,
     required PasswordController controller,
     required TextEditingController textController,
     required RxBool isHidden,
+    required double screenWidth,
+    required double screenHeight,
     FormFieldValidator<String>? validator,
   }) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: screenWidth * 0.04,
-            fontWeight: FontWeight.w500,
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
+      child: Obx(
+        () => TextFormField(
+          controller: textController,
+          obscureText: isHidden.value,
+          style: GoogleFonts.outfit(
+            fontSize: Responsive.getFontSize(screenWidth, 16),
+            color: Color(0xff616162),
           ),
-        ),
-        SizedBox(height: screenWidth * 0.02),
-        Obx(() => TextFormField(
-              controller: textController,
-              obscureText: isHidden.value,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.zero, // Sharp edges
-                ),
-                contentPadding: EdgeInsets.all(screenWidth * 0.03),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    isHidden.value ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.black54,
-                  ),
-                  onPressed: () {
-                    isHidden.toggle();
-                  },
-                ),
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: GoogleFonts.outfit(
+              fontSize: Responsive.getFontSize(screenWidth, 16),
+              color: Color(0xff616162),
+              fontWeight: FontWeight.w400,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.zero,
+              borderSide: BorderSide(color: Colors.black, width: 0.5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.zero,
+              borderSide: BorderSide(color: Colors.black, width: 0.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.zero,
+              borderSide: BorderSide(color: Colors.black, width: 0.5),
+            ),
+            contentPadding: EdgeInsets.all(screenWidth * 0.03),
+            suffixIcon: IconButton(
+              icon: Icon(
+                isHidden.value ? Icons.visibility_off : Icons.visibility,
+                color: Color(0xff191B1C),
+                size: screenHeight * 0.02,
               ),
-              validator: validator ??
-                  (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-            )),
-      ],
+              onPressed: () {
+                isHidden.toggle();
+              },
+            ),
+          ),
+          validator:
+              validator ??
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
+              },
+        ),
+      ),
     );
   }
 }

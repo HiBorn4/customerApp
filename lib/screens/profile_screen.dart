@@ -55,12 +55,19 @@ class ProfileScreen extends StatelessWidget {
 
             // Main content
             Container(
-              color: Colors.grey[100],
+              color: Colors.white,
               padding: EdgeInsets.all(screenWidth * 0.04),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildProfileSection(screenWidth, screenHeight),
+                  Center(
+                    child: Container(
+                      width: screenHeight * 0.4,
+                      height: 1,
+                      decoration: BoxDecoration(color: Colors.grey.shade300),
+                    ),
+                  ),
                   _buildSectionTitle('ACCOUNT', screenHeight),
                   _buildAccountOptions(screenWidth, screenHeight),
                 ],
@@ -92,14 +99,14 @@ class ProfileScreen extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          Text(
-            'Shuba Ecostone - 131',
-            style: GoogleFonts.outfit(
-              color: Color(0xff606062),
-              fontSize: Responsive.getFontSize(screenWidth, 16),
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+          // Text(
+          //   'Shuba Ecostone - 131',
+          //   style: GoogleFonts.outfit(
+          //     color: Color(0xff606062),
+          //     fontSize: Responsive.getFontSize(screenWidth, 16),
+          //     fontWeight: FontWeight.w400,
+          //   ),
+          // ),
         ],
       ),
     );
@@ -127,15 +134,17 @@ class ProfileScreen extends StatelessWidget {
                     Text(
                       'VISHAL KUMAR',
                       style: GoogleFonts.outfit(
-                        fontSize: Responsive.getFontSize(screenWidth, 18),
-                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: Responsive.getFontSize(screenWidth, 20),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
                       'Joined on 29, Nov 2050',
                       style: GoogleFonts.outfit(
                         fontSize: Responsive.getFontSize(screenWidth, 14),
-                        color: Colors.grey,
+                        color: Color(0xff656567),
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
@@ -157,7 +166,7 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildSectionTitle(String title, double screenHeight) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenHeight * 0.007),
       child: Text(
         title,
         style: GoogleFonts.outfit(
@@ -174,6 +183,7 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildAccountOptions(double screenWidth, double screenHeight) {
     final options = [
+      {'title': 'Notification', 'desc': 'Stay Informed your way'},
       {'title': 'Change Password', 'desc': 'Update your account password'},
       {'title': 'Refer', 'desc': 'Invite friends and earn rewards'},
       {'title': 'Report', 'desc': 'Submit issues or feedback'},
@@ -186,24 +196,33 @@ class ProfileScreen extends StatelessWidget {
       itemCount: options.length,
       itemBuilder:
           (context, index) => Card(
+            color: Colors.white,
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+              side: BorderSide(color: Colors.black, width: 0.5),
+            ),
             child: ListTile(
               title: Text(
                 options[index]['title']!,
                 style: GoogleFonts.outfit(
-                  fontSize: Responsive.getFontSize(screenWidth, 16),
-                  fontWeight: FontWeight.w500,
+                  fontSize: Responsive.getFontSize(screenWidth, 18),
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff191B1C),
                 ),
               ),
               subtitle: Text(
                 options[index]['desc']!,
                 style: GoogleFonts.outfit(
                   fontSize: Responsive.getFontSize(screenWidth, 14),
-                  color: Colors.grey,
+                  color: Color(0xff9FA0A1),
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 size: screenHeight * 0.02,
+                color: Color(0xff191B1C),
               ),
               onTap: () => _handleAccountOption(options[index]['title']!),
             ),
@@ -381,6 +400,9 @@ class ProfileScreen extends StatelessWidget {
         break;
       case 'Logout':
         _confirmLogout();
+        break;
+        case 'Notification':
+        Get.toNamed('/notification');
         break;
       // Add other cases
     }

@@ -4,6 +4,7 @@ import 'package:customerapp/screens/change_password_screen.dart';
 import 'package:customerapp/screens/cost_sheet_screen.dart';
 import 'package:customerapp/screens/login_screen.dart';
 import 'package:customerapp/screens/modification_screen.dart';
+import 'package:customerapp/screens/notification_screen.dart';
 import 'package:customerapp/screens/otp_screen.dart';
 import 'package:customerapp/screens/profile_screen.dart';
 import 'package:customerapp/screens/refer_screen.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/document', page: () => DocumentsScreen()),
         GetPage(name: '/transaction', page: () => TransactionScreen()),
         GetPage(name: '/transaction-detail', page: () => TransactionDetailsScreen()),
+        GetPage(name: '/notification', page: () => NotificationsScreen())
       ],
     );
   }

@@ -26,13 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     HomeContent(),
     ProjectsScreen(),
-    // Center(
-    //   child: Text("Documents Page", style: GoogleFonts.outfit()),
-    // ), // Placeholder for Documents
+
     ProfileScreen(),
-    // Center(
-    //   child: Text("Applicants Page", style: GoogleFonts.outfit()),
-    // ), // Placeholder for Applicants
   ];
 
   void _onItemTapped(int index) {
@@ -44,12 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       body: _pages[_selectedIndex], // Shows selected page
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         selectedItemColor: Colors.black, // Active tab color
         unselectedItemColor: Colors.grey, // Inactive tab color
+        selectedLabelStyle: GoogleFonts.outfit(color: Color(0xff646768)),
+        unselectedLabelStyle: GoogleFonts.outfit(color: Color(0xff646768)),
         items: [
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -64,25 +62,28 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            // icon: Icon(
-            //   Icons.person_add_alt_1,
-            //   color: _selectedIndex == 1 ? Colors.black : Colors.grey,
-            // ),
-            icon: Image.asset(
-              'assets/icons/units.png', // Replace with your custom icon path
-            width: 24,
-            height: 24,
-
+            icon: Icon(
+              Icons.apartment_sharp,
+              color: _selectedIndex == 1 ? Colors.black : Colors.grey,
             ),
+            // icon: Image.asset(
+            //   'assets/icons/units.png', // Replace with your custom icon path
+            //   width: 24,
+            //   height: 24,
+            // ),
             label: "Projects",
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/profile.png', // Replace with your custom icon path
-              width: 24,
-              height: 24,
+            icon: Icon(
+              Icons.person_rounded,
               color: _selectedIndex == 2 ? Colors.black : Colors.grey,
             ),
+            // icon: Image.asset(
+            //   'assets/icons/profile.png', // Replace with your custom icon path
+            //   width: 24,
+            //   height: 24,
+            //   color: _selectedIndex == 2 ? Colors.black : Colors.grey,
+            // ),
             label: "Profile",
           ),
         ],

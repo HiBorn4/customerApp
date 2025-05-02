@@ -6,7 +6,8 @@ class SummaryItem extends StatelessWidget {
   final String label;
   final double screenWidth;
 
-  const SummaryItem({super.key, 
+  const SummaryItem({
+    super.key,
     required this.value,
     required this.label,
     required this.screenWidth,
@@ -15,9 +16,8 @@ class SummaryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-    
       margin: EdgeInsets.symmetric(horizontal: 5),
-      padding: EdgeInsets.all(screenWidth*0.03),
+      padding: EdgeInsets.all(screenWidth * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
         // borderRadius: BorderRadius.circular(12),
@@ -31,7 +31,7 @@ class SummaryItem extends StatelessWidget {
             style: GoogleFonts.outfit(
               fontSize: screenWidth * 0.039,
               fontWeight: FontWeight.w600,
-              color: Colors.black
+              color: Colors.black,
             ),
           ),
           SizedBox(height: 8),
@@ -43,7 +43,8 @@ class SummaryItem extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          Icon(Icons.arrow_forward, size: screenWidth * 0.05),
+          SizedBox(height: 8),
+          // Icon(Icons.arrow_forward, size: screenWidth * 0.05),
         ],
       ),
     );
