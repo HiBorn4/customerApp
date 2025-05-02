@@ -1,3 +1,5 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customerapp/screens/projects_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -284,13 +286,72 @@ class HomeContent extends StatelessWidget {
           ),
         ),
         SizedBox(height: screenHeight * 0.01),
-        ListView.builder(
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('spark_customers')
+              .where('id', isEqualTo: 'DVJOJBnpv8bCDI4b0AWjpRL21gI3')
+              .snapshots(),
+          builder: (context, customerSnapshot) {
+            if (customerSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (!customerSnapshot.hasData || customerSnapshot.data!.docs.isEmpty) {
+              return Center(child: Text("No customer data found"));
+            }
+
+            // Get customer document
+
+            final customerDoc = customerSnapshot.data!.docs.first;
+
+            final List<String> unitIds = List<String>.from(customerDoc['my_assets']);
+            final List<String> projectIds=List<String>.from(customerDoc['projects']);
+
+            if (unitIds.isEmpty) {
+              return Center(child: Text("No units found in assets"));
+            }
+
+            return  FutureBuilder<List<Map<String, dynamic>>>(
+              future: _fetchUnitsWithProjects(unitIds, projectIds),
+              builder: (context, unitSnapshot) {
+                if (unitSnapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (!unitSnapshot.hasData || unitSnapshot.data!.isEmpty) {
+                  return Center(child: Text("No matching units found"));
+                }
+
+                final unitsWithProjects = unitSnapshot.data!;
+
+                return Column(
+                  children: unitsWithProjects.map((entry) {
+                    DocumentSnapshot unitDoc = entry['unit'];
+                    String projectName = entry['projectName'];
+
+                    return UnitItem(
+                      unit: unitDoc,
+                      projectName: projectName,
+                    );
+                  }).toList(),
+                );
+              },
+            );
+
+          },
+        ),
+
+
+
+
+
+        /* ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: _controller.myUnits.length,
           itemBuilder:
               (context, index) => UnitItem(unit: _controller.myUnits[index]),
-        ),
+        ),*/
         // Align(
         //   alignment: Alignment.centerRight,
         //   child: TextButton(
@@ -525,4 +586,41 @@ class HomeContent extends StatelessWidget {
       ),
     );
   }
+  Future<List<Map<String, dynamic>>> _fetchUnitsWithProjects(
+      List<String> unitIds,
+      List<String> projectIds,
+      ) async {
+    final firestore = FirebaseFirestore.instance;
+    List<Map<String, dynamic>> result = [];
+
+    for (int i = 0; i < unitIds.length; i++) {
+      String unitId = unitIds[i];
+      String projectId = projectIds.length > i ? projectIds[i] : '';
+
+      DocumentSnapshot unitDoc =
+      await firestore.collection('spark_units').doc(unitId).get();
+
+      DocumentSnapshot? projectDoc;
+      if (projectId.isNotEmpty) {
+        projectDoc =
+        await firestore.collection('spark_projects').doc(projectId).get();
+      }
+
+      if (unitDoc.exists) {
+        result.add({
+          'unit': unitDoc,
+          'projectName': projectDoc != null && projectDoc.exists
+              ? projectDoc['projectName'] ?? 'Unnamed Project'
+              : 'Unknown Project',
+        });
+      }
+    }
+
+    return result;
+  }
+
+
+
+
 }
+

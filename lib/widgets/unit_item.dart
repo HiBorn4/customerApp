@@ -6,9 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/unit_model.dart';
 
 class UnitItem extends StatelessWidget {
-  final UnitModel unit;
+  final String projectName;
+  final  unit;
 
-  const UnitItem({super.key, required this.unit});
+  const UnitItem({super.key,required this.unit, required this.projectName});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class UnitItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          'SHUBA ECO STONE',
+                          '${projectName}',
                           style: GoogleFonts.outfit(
                             fontSize: screenWidth * 0.031,
                             fontWeight: FontWeight.w600,
@@ -62,7 +63,7 @@ class UnitItem extends StatelessWidget {
                             style: GoogleFonts.outfit(fontSize: screenWidth * 0.035),
                           ),
                           Text(
-                            unit.unitNo,
+                            unit['unit_no'],
                             style: GoogleFonts.outfit(
                               fontSize: screenWidth * 0.035,
                               fontWeight: FontWeight.bold,
@@ -90,7 +91,8 @@ class UnitItem extends StatelessWidget {
                       ),
                       SizedBox(height: screenHeight * 0.01),
                       Text(
-                        unit.user,
+                        "S.Vishal Kumar",
+                        //unit.user,
                         style: GoogleFonts.outfit(
                           fontSize: screenWidth * 0.04,
                           fontWeight: FontWeight.w500,
@@ -117,7 +119,7 @@ class UnitItem extends StatelessWidget {
                         color: Color(0XFFDFF6E0),
                       ),
                       child: Text(
-                        'REGISTERED',
+                        unit['status'],
                         style: GoogleFonts.outfit(
                           color: Color(0xff1B6600),
                           fontWeight: FontWeight.w400,
@@ -132,7 +134,7 @@ class UnitItem extends StatelessWidget {
                     ),
                     SizedBox(height: screenHeight * 0.005),
                     Text(
-                      '₹${unit.due}',
+                      '₹${unit['T_elgible_balance']}',
                       style: GoogleFonts.outfit(
                         fontWeight: FontWeight.w700,
                         fontSize: screenWidth * 0.05,

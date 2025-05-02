@@ -12,12 +12,12 @@ class HomeController extends GetxController {
 
   final attentionItems = [
     UnitModel(
-      unitNo: '131',
+      unit_no: '131',
       amount: '1,32,000',
       daysLeft: '3', name: '', user: '', due: '',
     ),
     UnitModel(
-      unitNo: '152',
+      unit_no: '152',
       amount: '2,50,000',
       daysLeft: '5', name: '', user: '', due: '',
     ),
@@ -25,13 +25,13 @@ class HomeController extends GetxController {
 
   final myUnits = [
     UnitModel(
-      unitNo: '131',
+      unit_no: '131',
       name: 'SHUBA ECO STONE',
       user: 'S Vishal Kumar',
       due: '1,32,000',
     ),
     UnitModel(
-      unitNo: '152',
+      unit_no: '152',
       name: 'SHUBA ELAN',
       user: 'S Vishal Kumar',
       due: '2,50,000',
