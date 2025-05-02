@@ -1,3 +1,4 @@
+import 'package:customerapp/controllers/project_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,9 @@ import '../models/quick_action_model.dart';
 import '../utils/app_colors.dart';
 
 class PaymentScheduleScreen extends StatelessWidget {
+
+  final ProjectController projectController=Get.find<ProjectController>();
+
   final PaymentScheduleController _controller = Get.put(
     PaymentScheduleController(),
   );
@@ -100,7 +104,7 @@ class PaymentScheduleScreen extends StatelessWidget {
         ),
         SizedBox(height: screenHeight * 0.01),
         Text(
-          '₹ 1,11,32,000',
+          '₹ ${projectController.totalAmount.value.round()}',
           style: GoogleFonts.outfit(
             color: Color(0xff191B1C),
             fontSize: screenHeight * 0.035,
@@ -116,12 +120,12 @@ class PaymentScheduleScreen extends StatelessWidget {
       () => ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: _controller.payments.length,
+        itemCount: projectController.payments.length,
         itemBuilder:
             (context, index) => _buildPaymentItem(
               screenWidth,
               screenHeight,
-              _controller.payments[index],
+              projectController.payments[index],
             ),
       ),
     );

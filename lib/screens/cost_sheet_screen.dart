@@ -53,7 +53,7 @@ class CostSheetScreen extends StatelessWidget {
               screenHeight,
              projectController.tD.value,  // Access the value using .value
             ),
-            _buildPaymentList(screenWidth, screenHeight),
+           // _buildPaymentList(screenWidth, screenHeight),
             _buildQuickActionsSection(screenWidth, screenHeight),
           ],
         ),

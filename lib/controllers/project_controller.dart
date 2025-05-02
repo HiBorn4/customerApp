@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/cost_item_model.dart';
 import '../models/document_model.dart';
+import '../models/payment_entry_model.dart';
 import '../models/quick_action_model.dart';
 import '../models/transaction_model.dart';
 import '../models/unit_model.dart';
@@ -20,7 +22,7 @@ class ProjectController extends GetxController {
   final RxList<Map<String, String>> costSheetItems =
       <Map<String, String>>[].obs;
 
-
+  final RxList<PaymentEntry> payments = <PaymentEntry>[].obs;
   final RxList<CostItem> additionalCharges = <CostItem>[].obs;
   final RxList<CostItem> constructionCharges = <CostItem>[].obs;
   final RxList<CostItem> constructionAdditionalCharges = <CostItem>[].obs;
@@ -133,6 +135,7 @@ final attentionItems = [
     _parseUnitSummaryData();
     _parseCostItems();
     _parseTValues();
+    _parsePaymentData();
   }
 
 
@@ -219,6 +222,121 @@ final attentionItems = [
       );
     }
     return '0.00';
+  }
+
+
+
+  void _parsePaymentData() {
+    var unitData = unit.data() as Map<String, dynamic>;
+    if (unitData.containsKey("fullPs")) {
+      var fullPs = unitData["fullPs"];
+      if (fullPs is List &&
+          fullPs.isNotEmpty &&
+          fullPs[0] is Map<String, dynamic>) {
+        List<Map<String, dynamic>> allSchedules = [];
+
+        for (int index = 0; index < fullPs.length; index++) {
+          var item = fullPs[index];
+
+          String dateStr =
+              item["schDate"]?.toString() ?? item["oldDate"]?.toString() ?? '';
+          String formattedDate = _formatDate(dateStr);
+          String amountStr = "₹ ${_formatCurrency(item["value"] ?? 0)}";
+
+          int outstanding =
+              item["outstanding"] ?? 1; // Assuming unpaid by default
+          String status;
+          Color statusColor;
+
+          DateTime? scheduledDate;
+          try {
+            if (dateStr.isNotEmpty) {
+              scheduledDate = DateTime.fromMillisecondsSinceEpoch(
+                int.parse(dateStr),
+              );
+            }
+          } catch (e) {
+            scheduledDate = null;
+          }
+
+          DateTime today = DateTime.now();
+          if (outstanding == 0) {
+            status = "PAID";
+            statusColor = Colors.green;
+          } else if (scheduledDate != null && scheduledDate.isAfter(today)) {
+            status = "UPCOMING";
+            statusColor = Colors.orange;
+          } else if (scheduledDate != null && scheduledDate.isBefore(today)) {
+            status = "DUE TODAY";
+            statusColor = Colors.red;
+          } else {
+            status = "PENDING";
+            statusColor = Colors.grey;
+          }
+
+          allSchedules.add({
+            'number': (index + 1).toString().padLeft(2, '0'),
+            'date': formattedDate,
+            'description': item["label"] ?? '',
+            'amount': amountStr,
+            'status': status,
+            'statusColor': statusColor,
+          });
+        }
+
+        paymentSchedule.value = allSchedules;
+        payments.value =
+            allSchedules.map((entry) => PaymentEntry.fromJson(entry)).toList();
+
+        print("\n📅 Parsed Payment Schedule Entries:");
+        for (var item in allSchedules) {
+          print('--------------------------------');
+          print('🔢 No: ${item['number']}');
+          print('📆 Date: ${item['date']}');
+          print('📝 Description: ${item['description']}');
+          print('💰 Amount: ${item['amount']}');
+          print('📌 Status: ${item['status']}');
+        }
+      } else {
+        print("fullPs format is unexpected or empty.");
+      }
+    } else {
+      print("fullPs not found in project data.");
+    }
+  }
+  String _formatDate(dynamic date) {
+    if (date is Timestamp) {
+      // Use your preferred date format here
+      return date.toDate().toString();
+    }
+    if (date is String && date.isNotEmpty) {
+      try {
+        DateTime parsedDate = DateTime.parse(date);
+        // Customize format if needed, for now returning in 'dd, MMM, yyyy'
+        return "${parsedDate.day}, ${_getMonthName(parsedDate.month)}, ${parsedDate.year}";
+      } catch (e) {
+        return date;
+      }
+    }
+    return 'N/A';
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return months[month - 1];
   }
 
 

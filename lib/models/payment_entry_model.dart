@@ -1,6 +1,5 @@
 // Models
 import 'package:flutter/material.dart';
-
 class PaymentEntry {
   final String number;
   final String date;
@@ -17,4 +16,15 @@ class PaymentEntry {
     required this.status,
     required this.statusColor,
   });
+
+  factory PaymentEntry.fromJson(Map<String, dynamic> json) {
+    return PaymentEntry(
+      number: json['number'] ?? '',
+      date: json['date'] ?? '',
+      description: json['description'] ?? '',
+      amount: json['amount'] ?? '',
+      status: json['status'] ?? '',
+      statusColor: json['statusColor'] ?? Colors.grey,
+    );
+  }
 }

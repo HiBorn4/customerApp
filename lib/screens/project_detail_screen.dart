@@ -57,7 +57,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
             _buildCategory(screenWidth, screenHeight),
             SizedBox(height: screenHeight * 0.03),
 
-            _buildUnitDimensions(screenWidth, screenHeight),
+          //  _buildUnitDimensions(screenWidth, screenHeight),
             SizedBox(height: screenHeight * 0.03),
             _buildModificationSection(screenWidth),
             SizedBox(height: screenHeight * 0.03),
@@ -187,6 +187,7 @@ Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
                   size: screenWidth * 0.35,
                   paidColor: Colors.purple[300]!, // Paid section color
                   eligibleColor: Colors.grey[400]!, // Remaining section color
+
                 ),
                 SizedBox(height: screenWidth * 0.05), // Space below donut
               ],
@@ -349,19 +350,19 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
         children: [
           _buildCategoryItem(
               screenWidth, screenHeight, Icons.receipt_long, "Cost Sheet", () {
-            Get.toNamed('/costSheet');
+            Get.toNamed('/cost-sheet');
           }),
           _buildCategoryItem(
               screenWidth, screenHeight, Icons.schedule, "Schedule", () {
-            Get.toNamed('/schedule');
+            Get.toNamed('/payment-schedule');
           }),
           _buildCategoryItem(
               screenWidth, screenHeight, Icons.list, "Activity", () {
-            Get.toNamed('/activity');
+            Get.toNamed('/activity-log');
           }),
           _buildCategoryItem(
               screenWidth, screenHeight, Icons.build, "Modifications", () {
-            Get.toNamed('/modifications');
+            Get.toNamed('/modification');
           }),
         ],
       ),
@@ -379,8 +380,7 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
     child: Column(
       children: [
         GestureDetector(
-          onTap: ()=>
-             Get.toNamed('/cost-sheet'),
+          onTap: onTap,
 
           child: Container(
             width: containerSize,

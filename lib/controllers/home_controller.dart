@@ -6,8 +6,8 @@ class HomeController extends GetxController {
 
   final summaryData = [
     {'value': '1', 'label': 'Total Units'},
-    {'value': '1,11,00,000', 'label': 'Total Due'},
-    {'value': '3,00,000', 'label': 'Total Paid'},
+    {'value': '63,26,368', 'label': 'Total Due'},
+    {'value': '10,000', 'label': 'Total Paid'},
   ];
 
   final attentionItems = [

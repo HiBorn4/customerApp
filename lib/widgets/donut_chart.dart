@@ -80,44 +80,45 @@ class _DonutChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double strokeWidth = size.width * 0.25; // Increased thickness
+    final double strokeWidth = size.width * 0.25;
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double radius = (size.width - strokeWidth) * 1.15;
-    final double paidPercentage = paid / total;
 
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.butt; // Keeps edges sharp
+      ..strokeCap = StrokeCap.butt;
 
-    // Draw remaining balance (Grey)
-paint.color = Colors.grey[300]!;
-canvas.drawCircle(center, radius, paint);
+    final double paidPercentage = (paid / total).clamp(0.0, 1.0); // Ensures it's between 0 and 1
+    final double paidAngle = paidPercentage * 2 * math.pi;
 
-// Draw eligible balance (Lavender)
-paint.color = Colors.purple[200]!;
-canvas.drawArc(
-  Rect.fromCircle(center: center, radius: radius),
-  -math.pi / 2,
-  (1 - paidPercentage) * 2 * math.pi,
-  false,
-  paint,
-);
+    // Base grey circle (background)
+    paint.color = Colors.grey[300]!;
+    canvas.drawCircle(center, radius, paint);
 
-// Draw paid arc (Main color)
-if (paid > 0) {
-  final double paidAngle = paidPercentage * 2 * math.pi;
-  paint.color = paidColor;
-  canvas.drawArc(
-    Rect.fromCircle(center: center, radius: radius),
-    -math.pi / 2, // Start from the top
-    paidAngle,
-    false,
-    paint,
-  );
-}
+    // Full eligible arc (Lavender) — the total eligible amount
+    paint.color = eligibleColor; // typically Colors.purple[200]
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -math.pi / 2,
+      2 * math.pi,
+      false,
+      paint,
+    );
 
+    // Paid arc (Overlay)
+    if (paid > 0) {
+      paint.color = paidColor;
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        -math.pi / 2,
+        paidAngle,
+        false,
+        paint,
+      );
+    }
   }
+
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
