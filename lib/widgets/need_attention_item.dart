@@ -19,7 +19,7 @@ class NeedsAttentionItem extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      height: screenHeight * 0.17,
+      height: screenHeight * 0.19,
       width: screenWidth,
       child: Padding(
         padding: const EdgeInsets.only(left: 6.0, right: 6.0),

@@ -10,13 +10,36 @@ import '../widgets/transaction_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../utils/responsive.dart';
 
-class ProjectDetailScreen extends StatelessWidget {
-  final ProjectController _controller = Get.put(ProjectController());
+class ProjectDetailScreen extends StatefulWidget {
+  @override
+  State<ProjectDetailScreen> createState() => _ProjectDetailScreenState();
+}
+
+class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
+  late final String projectName;
+  late final dynamic unit;
+  late final ProjectController _controller;
+
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    final args = Get.arguments;
+    projectName = args['projectName'];
+    unit = args['unit'];
+
+
+    _controller = Get.put(ProjectController(projectName: projectName, unit: unit));
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -30,7 +53,7 @@ class ProjectDetailScreen extends StatelessWidget {
             SizedBox(height: screenHeight * 0.03),
 
               _buildNeedsAttentionSection(screenWidth, screenHeight),
-            
+
             _buildCategory(screenWidth, screenHeight),
             SizedBox(height: screenHeight * 0.03),
 
@@ -145,8 +168,6 @@ Widget _buildTab(String text, int index, RxInt selectedTab, double screenWidth) 
   );
 }
 
-
-
 // Widget for Stage Balance
 Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
   return Column(
@@ -155,7 +176,7 @@ Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns donut and amounts properly
         children: [
           // Donut Chart (Eligible = Grey, Paid = Light Lavender)
-          SizedBox(width: screenWidth * 0.08),  
+          SizedBox(width: screenWidth * 0.08),
           Expanded(
             flex: 2,
             child: Column(
@@ -173,12 +194,12 @@ Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
           ),
 
           // Added space between Donut Chart and Amount Details
-          SizedBox(width: screenWidth * 0.2),  
+          SizedBox(width: screenWidth * 0.2),
 
           // Amount Details
           Expanded(
             flex: 3,
-            child: 
+            child:
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -205,7 +226,6 @@ Widget _buildStageBalance(double screenWidth, ProjectController _controller) {
   );
 }
 
-
 // Legend Item Widget
 Widget _buildLegendItem(Color color, String label) {
   return Row(
@@ -228,7 +248,6 @@ Widget _buildLegendItem(Color color, String label) {
   );
 }
 
-
 // Placeholder for Unit Cost section
 Widget _buildUnitCost(double screenWidth, ProjectController _controller) {
   return Center(
@@ -238,7 +257,6 @@ Widget _buildUnitCost(double screenWidth, ProjectController _controller) {
     ),
   );
 }
-
 
 // Amount Row (Stacked Layout: Label above, Value below)
 Widget _buildAmountRow(String label, String value, Color color) {
@@ -256,7 +274,7 @@ Widget _buildAmountRow(String label, String value, Color color) {
                 fontWeight: FontWeight.w500, // Slightly bold for emphasis
               ),
             ),
-          
+
         SizedBox(height: 4), // Small spacing between label and value
         Text(
           value,
@@ -314,7 +332,6 @@ Widget _buildNeedsAttentionSection(double screenWidth, double screenHeight) {
     );
   }
 
-
   Widget _buildCategory(double screenWidth, double screenHeight) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,7 +381,7 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
         GestureDetector(
           onTap: ()=>
              Get.toNamed('/cost-sheet'),
-          
+
           child: Container(
             width: containerSize,
             height: containerSize,
@@ -401,9 +418,6 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
   );
 }
 
-
-
-
   Widget _buildUnitDimensions(double screenWidth, double screenHeight) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,7 +440,6 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
     ],
   );
 }
-
 
   Widget _buildModificationSection(double screenWidth) {
   return Column(
@@ -507,8 +520,6 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
     ],
   );
 }
-
-
 
   Widget _buildHelpRepairSection(double screenWidth) {
   return Column(
@@ -597,8 +608,6 @@ Widget _buildCategoryItem(double screenWidth, double screenHeight,
     ],
   );
 }
-
-
 
   Widget _buildDocumentsSection(double screenWidth) {
   return Column(
@@ -693,8 +702,4 @@ Widget _buildTransactionsSection(double screenWidth) {
     ],
   );
 }
-
-
-
-  
 }

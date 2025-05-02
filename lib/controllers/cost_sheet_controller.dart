@@ -12,26 +12,6 @@ class CostSheetController extends GetxController {
     CostItem('PLC', '0 sqft', '₹ 0'),
   ];
 
-  final List<CostItem> additionalCharges = [
-    CostItem('Legal charges', '', '₹ 50'),
-    CostItem('Registration', '', '₹ 86,950'),
-  ];
-
-  final List<CostItem> constructionCharges = [
-    CostItem('Villa Construction', '30 sqft', '₹ 3500'),
-    CostItem('Construction PLC', '0 sqft', '₹ 0'),
-  ];
-
-  final List<CostItem> constructionAdditional = [
-    CostItem('BESCOM & BWSSB', '50 sqft', '₹ 200'),
-    CostItem('Club house membership', 'Fixed', '₹ 38,000'),
-    CostItem('Garden area cost', '100 sqft', '₹ 48,800'),
-  ];
-
-  final List<CostItem> possessionCharges = [
-    CostItem('Corpus Charges', '50 sqft', '₹ 60'),
-    CostItem('Maintenance', '50 sqft', '₹ 50'),
-  ];
 
   final List<PaymentEntry> paymentEntries = [
     PaymentEntry(
@@ -54,4 +34,10 @@ class CostSheetController extends GetxController {
       description: 'Initiate new payment',
     ),
   ];
+
+
+
+
+
+
 }

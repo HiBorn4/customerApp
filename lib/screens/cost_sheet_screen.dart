@@ -1,3 +1,4 @@
+import 'package:customerapp/controllers/project_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +10,7 @@ import '../utils/app_colors.dart';
 
 class CostSheetScreen extends StatelessWidget {
   final CostSheetController _controller = Get.put(CostSheetController());
+  final ProjectController projectController=Get.find<ProjectController>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,35 @@ class CostSheetScreen extends StatelessWidget {
         child: Column(
           children: [
             _buildTotalUnitCost(screenWidth, screenHeight),
-            _buildSection('PLOT', _controller.plcItems, screenWidth, screenHeight),
-            _buildSection('ADDITIONAL CHARGES', _controller.additionalCharges, screenWidth, screenHeight),
-            _buildSection('CONSTRUCTION CHARGES', _controller.constructionCharges, screenWidth, screenHeight),
-            _buildSection('CONSTRUCTION ADDITIONAL CHARGES', _controller.constructionAdditional, screenWidth, screenHeight),
-            _buildPossessionSection(screenWidth, screenHeight),
+            _buildSection(
+              'Additional Charges',
+              projectController.additionalCharges,
+              screenWidth,
+              screenHeight,
+              projectController.tA.value,  // Access the value using .value
+            ),
+            _buildSection(
+              'Construction Charges',
+              projectController.constructionCharges,
+              screenWidth,
+              screenHeight,
+              projectController.tB.value,  // Access the value using .value
+            ),
+            _buildSection(
+              'Construction Additional Charges',
+              projectController.constructionAdditionalCharges,
+              screenWidth,
+              screenHeight,
+
+              projectController.tC.value,  // Access the value using .value
+            ),
+            _buildSection(
+              'Possession Charges',
+              projectController.possessionCharges,
+              screenWidth,
+              screenHeight,
+             projectController.tD.value,  // Access the value using .value
+            ),
             _buildPaymentList(screenWidth, screenHeight),
             _buildQuickActionsSection(screenWidth, screenHeight),
           ],
@@ -74,7 +100,7 @@ class CostSheetScreen extends StatelessWidget {
         ),
         SizedBox(height: screenHeight * 0.01),
         Text(
-          '₹ 1,11,32,000',
+          '₹ ${projectController.totalAmount.value.round()}',
           style: TextStyle(
             fontSize: screenHeight * 0.035,
             fontWeight: FontWeight.bold,
@@ -83,38 +109,43 @@ class CostSheetScreen extends StatelessWidget {
       ],
     );
   }
-
-  Widget _buildSection(String title, List<CostItem> items, double screenWidth, double screenHeight) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: screenHeight * 0.016,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+  Widget _buildSection(
+      String title,
+      List<CostItem> items,
+      double screenWidth,
+      double screenHeight,
+      double total,
+      ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: screenHeight * 0.016,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
-      ),
-      Container(
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-        child: Column(
-          children: [
-            // _buildDashedDivider(),
-            ...items.map((item) => _buildCostItem(item, screenWidth, screenHeight)),
-            _buildDashedDivider(),
-            _buildTotalRow(screenWidth, screenHeight),
-          ],
+        Container(
+          color: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
+          child: Column(
+            children: [
+              ...items.map(
+                    (item) => _buildCostItem(item, screenWidth, screenHeight),
+              ),
+              _buildDashedDivider(),
+              _buildTotalRow(screenWidth, screenHeight, total),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 Widget _buildCostItem(CostItem item, double screenWidth, double screenHeight) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
@@ -177,33 +208,13 @@ Widget _buildDashedDivider() {
 }
 
 
-  Widget _buildTotalRow(double screenWidth, double screenHeight) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Total',
-              style: TextStyle(
-                fontSize: screenHeight * 0.018,
-                fontWeight: FontWeight.bold,
-              )),
-          Text('₹ 87,000',
-              style: TextStyle(
-                fontSize: screenHeight * 0.018,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              )),
-        ],
-      ),
-    );
-  }
+
 
   Widget _buildPossessionSection(double screenWidth, double screenHeight) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _buildSection('POSSESSION CHARGES', _controller.possessionCharges, screenWidth, screenHeight),
+        _buildSection('POSSESSION CHARGES', projectController.possessionCharges, screenWidth, screenHeight,5),
         Padding(
           padding: EdgeInsets.only(top: screenHeight * 0.02, bottom: screenHeight*0.01),
           child: Container(
@@ -228,6 +239,38 @@ Widget _buildDashedDivider() {
       ],
     );
   }
+
+  Widget _buildTotalRow(
+      double screenWidth,
+      double screenHeight,
+      double total,
+      ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Total',
+            style: TextStyle(
+              fontSize: screenHeight * 0.018,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            "$total",
+            style: TextStyle(
+              fontSize: screenHeight * 0.018,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   Widget _buildPaymentList(double screenWidth, double screenHeight) {
     return Column(
@@ -437,8 +480,8 @@ Widget _buildDashedDivider() {
 
 
   Widget _buildPaymentSchedule(double screenWidth, double screenHeight) {
-    return 
-    // Obx(() => 
+    return
+    // Obx(() =>
     Card(
       margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
       child: Padding(
@@ -518,9 +561,9 @@ Widget _buildDashedDivider() {
   }
 
   Widget _buildQuickActionsSection(double screenWidth, double screenHeight) {
-    return 
-    // Obx(() => 
-    
+    return
+    // Obx(() =>
+
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -567,7 +610,7 @@ Widget _buildDashedDivider() {
               fontSize: screenHeight * 0.015,
               color: Colors.grey,
             )),
-        trailing: Icon(Icons.arrow_forward_ios, 
+        trailing: Icon(Icons.arrow_forward_ios,
             size: screenHeight * 0.02),
         onTap: () =>  Get.toNamed('/activity-log'),
       ),

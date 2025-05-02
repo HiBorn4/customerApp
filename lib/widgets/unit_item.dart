@@ -134,7 +134,7 @@ class UnitItem extends StatelessWidget {
                     ),
                     SizedBox(height: screenHeight * 0.005),
                     Text(
-                      '₹${unit['T_elgible_balance']}',
+                      '₹${(unit['T_elgible_balance'] as num).toInt()}',
                       style: GoogleFonts.outfit(
                         fontWeight: FontWeight.w700,
                         fontSize: screenWidth * 0.05,
@@ -142,7 +142,13 @@ class UnitItem extends StatelessWidget {
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     InkWell(
-                      onTap: () => Get.toNamed('/project-detail'),
+                      onTap: () => Get.toNamed(
+                        '/project-detail',
+                        arguments: {
+                          'projectName': projectName,
+                          'unit': unit,
+                        },
+                      ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
